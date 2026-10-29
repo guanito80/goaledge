@@ -828,5 +828,85 @@ load();loadPicks();bind();init();renderPicks();
  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!overlay.hidden)hide()});
 })();
 </script>
+
+<script>
+(function(){
+  'use strict';
+  const ARCHIVE_KEY='goal-edge-asianodds-ht-archive-v1';
+  const PATTERN_KEY='goal-edge-pattern-lab-v1';
+  const $=id=>document.getElementById(id);
+  const readRaw=(key)=>localStorage.getItem(key);
+  const readArray=(key)=>{try{const x=JSON.parse(readRaw(key)||'[]');return Array.isArray(x)?x:[]}catch(e){return []}};
+  const validMatch=x=>x&&typeof x==='object'&&typeof x.id==='string'&&typeof x.home==='string'&&typeof x.away==='string'&&typeof x.date==='string';
+  const mergeById=(oldItems,newItems)=>{
+    const map=new Map();
+    oldItems.forEach((x,i)=>{const k=x&&typeof x.id==='string'?x.id:'__old_'+i;map.set(k,x)});
+    let added=0;
+    newItems.forEach((x,i)=>{const k=x&&typeof x.id==='string'?x.id:'__new_'+i;if(!map.has(k)){map.set(k,x);added++}});
+    return {items:Array.from(map.values()),added};
+  };
+  function say(msg){const el=$('dataBackupMessage');if(el)el.textContent=msg;}
+  function download(name,obj){
+    const blob=new Blob([JSON.stringify(obj,null,2)],{type:'application/json;charset=utf-8'});
+    const url=URL.createObjectURL(blob),a=document.createElement('a');
+    a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1500);
+  }
+  $('exportAllData')?.addEventListener('click',()=>{
+    try{
+      const archive=readArray(ARCHIVE_KEY);
+      let patterns=[];
+      try{patterns=JSON.parse(readRaw(PATTERN_KEY)||'[]')}catch(e){patterns=[]}
+      download('GoalEdge_backup_Archivio_Pattern.json',{
+        app:'Goal Edge',formatVersion:1,exportedAt:new Date().toISOString(),archive,patterns
+      });
+      say('Backup creato: '+archive.length+' match in Archivio. I dati Pattern salvati sono inclusi nel file.');
+    }catch(e){say('Errore durante l’esportazione: '+e.message);}
+  });
+  $('importAllData')?.addEventListener('click',()=>{
+    const fileInput=$('dataBackupFile');
+    if(fileInput){fileInput.value='';fileInput.click();}
+    else say('Errore: campo per selezionare il JSON non trovato.');
+  });
+  $('dataBackupFile')?.addEventListener('change',async e=>{
+    const file=e.target.files&&e.target.files[0];if(!file)return;
+    try{
+      const parsed=JSON.parse(await file.text());
+      let incomingArchive=[],incomingPatterns,hasPatterns=false;
+      if(Array.isArray(parsed)) incomingArchive=parsed;
+      else if(parsed&&typeof parsed==='object'&&(Array.isArray(parsed.archive)||Object.prototype.hasOwnProperty.call(parsed,'patterns'))){
+        incomingArchive=Array.isArray(parsed.archive)?parsed.archive:[];
+        incomingPatterns=parsed.patterns;
+        hasPatterns=Object.prototype.hasOwnProperty.call(parsed,'patterns');
+      }else throw new Error('Formato non riconosciuto. Seleziona il JSON dell’Archivio o un backup Goal Edge.');
+      if(!incomingArchive.every(validMatch))throw new Error('Il JSON non contiene match riconoscibili. Nessun dato è stato modificato.');
+      const oldArchive=readArray(ARCHIVE_KEY);
+      const mergedArchive=mergeById(oldArchive,incomingArchive);
+      localStorage.setItem(ARCHIVE_KEY,JSON.stringify(mergedArchive.items));
+      const checkA=JSON.parse(localStorage.getItem(ARCHIVE_KEY)||'[]');
+      if(!Array.isArray(checkA)||checkA.length!==mergedArchive.items.length)throw new Error('Verifica del salvataggio Archivio non riuscita.');
+      let patternMessage=' Il JSON selezionato non contiene Pattern: non può recuperare lo storico Pattern precedente.';
+      if(hasPatterns){
+        // Keep the original pattern payload shape. If both are arrays, merge safely.
+        let oldP;
+        try{oldP=JSON.parse(readRaw(PATTERN_KEY)||'[]')}catch(err){oldP=[]}
+        let newP=incomingPatterns;
+        if(Array.isArray(oldP)&&Array.isArray(newP)){
+          const mergedP=mergeById(oldP,newP);
+          localStorage.setItem(PATTERN_KEY,JSON.stringify(mergedP.items));
+          patternMessage=` Pattern: backup importato; elementi aggiunti ${mergedP.added}.`;
+        }else if((oldP==null)||(Array.isArray(oldP)&&oldP.length===0)){
+          localStorage.setItem(PATTERN_KEY,JSON.stringify(newP));
+          patternMessage=' Pattern: backup importato.';
+        }else{
+          patternMessage=' Pattern presente nel backup, ma la struttura è diversa: non è stato sovrascritto per evitare perdita dati.';
+        }
+      }
+      say(`Importazione completata. Match nel file: ${incomingArchive.length}. Nuovi match aggiunti: ${mergedArchive.added}. Totale Archivio: ${checkA.length}.`+patternMessage+' Ora apri Archivio e verifica il conteggio.');
+    }catch(err){say('Importazione non completata: '+err.message);}
+    finally{e.target.value='';}
+  });
+})();
+</script>
 </body>
 </html>
