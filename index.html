@@ -1,0 +1,765 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Goal Edge · AsianOdds HT v31</title>
+<style>
+:root{--bg:#f4f6f4;--panel:#fff;--ink:#202821;--muted:#667168;--line:#dce3dc;--green:#28784a;--greenbg:#e4f2e8;--amber:#936313;--amberbg:#fff3d8;--red:#9a4740;--redbg:#fbe9e6}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+main{max-width:1120px;margin:auto;padding:20px}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.kicker{font-size:12px;text-transform:uppercase;letter-spacing:.12em;color:var(--green);font-weight:800}h1{font-size:clamp(24px,4vw,34px);margin:4px 0}h2{font-size:19px;margin:0 0 12px}p{margin:6px 0;color:var(--muted)}
+.pill{border:1px solid var(--line);border-radius:999px;padding:7px 11px;background:white;font-size:12px;font-weight:700}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px;margin:14px 0;box-shadow:0 3px 12px #1b2b1d08}
+label{display:block;font-weight:750;margin-bottom:6px}textarea{width:100%;min-height:220px;resize:vertical;border:1px solid #cbd5cb;border-radius:11px;padding:12px;font:13px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;background:#fcfdfc;color:var(--ink)}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.add-match{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;padding:0;margin-left:7px;border-radius:8px;font-size:20px;line-height:1;background:#e4f2e8;color:#20683b;border:1px solid #b8dfc2;vertical-align:middle}.archive-btn{background:#46594a}.pattern-btn{background:#7650a8}.archive-btn{background:#287b82}.asianodds-btn{display:inline-flex;align-items:center;gap:7px;background:#e87825;color:#fff;text-decoration:none;border-radius:10px;padding:11px 15px;font-weight:850;white-space:nowrap}.asianodds-btn:hover{background:#c96016}.top-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.archive-actions{display:flex;gap:7px;align-items:center;flex-wrap:wrap}.archive-empty{padding:12px;border:1px dashed var(--line);border-radius:10px;color:var(--muted)}.delete-match{background:#fbe9e6;color:#9a4740;border:1px solid #f0c3bd;padding:7px 10px}.archive-stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin:12px 0 16px}.archive-stats .stat{border:1px solid var(--line);border-radius:10px;padding:10px;background:var(--panel)}.archive-stats .stat span{display:block;font-size:11px;color:var(--muted)}.archive-stats .stat b{display:block;font-size:20px;margin-top:4px}.wl-select{min-width:76px;padding:7px 8px;border:1px solid var(--line);border-radius:8px;background:#fff;font-weight:800}.wl-select.win{background:#dff2e4;color:#20683b;border-color:#b8dfc2}.wl-select.lose{background:#fbe4e1;color:#a13e36;border-color:#f0c3bd}@media(max-width:700px){.archive-stats{grid-template-columns:repeat(3,minmax(0,1fr))}.archive-stats .stat{padding:7px}.archive-stats .stat b{font-size:17px}}button{border:0;border-radius:10px;padding:11px 15px;font-weight:800;cursor:pointer;background:var(--green);color:#fff}button.secondary{background:#e9eee9;color:var(--ink);border:1px solid var(--line)}
+button#toggleTrader{background:#ffd447!important;color:#3d3000!important;border:1px solid #e5b91f!important;box-shadow:0 2px 0 #d7aa12;font-weight:900}
+button#toggleTrader:hover{background:#ffca1a!important}
+button.tt-btn.added[data-trader-add]{background:#ffd447!important;color:#3d3000!important;border:1px solid #e5b91f!important;font-weight:900}
+button.tt-btn.added[data-trader-add]:hover{background:#ffca1a!important}button:focus,textarea:focus,input:focus,select:focus{outline:3px solid #9bc8a9;outline-offset:2px}
+.notice{border-radius:10px;padding:11px 12px;background:var(--amberbg);color:#704b0d;font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.field{background:#fbfcfb;border:1px solid var(--line);padding:10px;border-radius:11px}.field input,.field select{width:100%;border:1px solid #cbd5cb;border-radius:8px;padding:10px;font:inherit;background:white;color:var(--ink)}
+.result{margin-top:12px;border:1px solid var(--line);border-radius:12px;padding:14px;background:#fbfcfb}.result strong{font-size:18px}.tag{display:inline-block;border-radius:999px;padding:4px 8px;font-size:12px;font-weight:800}.strong,.good{background:var(--greenbg);color:var(--green)}.mid,.neutral{background:var(--amberbg);color:var(--amber)}.weak,.bad{background:var(--redbg);color:var(--red)}
+.value-pair{display:flex;align-items:center;gap:6px;flex-wrap:wrap}.value-chip{display:inline-flex;align-items:center;gap:4px;padding:5px 8px;border-radius:8px;font-weight:800;font-variant-numeric:tabular-nums;border:1px solid transparent}.value-up{background:#dff2e4;color:#20683b;border-color:#b8dfc2}.value-down{background:#fbe4e1;color:#a13e36;border-color:#f0c3bd}.value-flat{background:#fff0c9;color:#835a0b;border-color:#f0dda0}.value-label{font-size:10px;font-weight:700;opacity:.8;text-transform:uppercase;letter-spacing:.04em}.total-step-up{display:inline-block;background:#dff2e4;color:#20683b;border:1px solid #b8dfc2;border-radius:7px;padding:3px 7px;font-weight:800}.quota-current-good{display:inline-block;background:#dff2e4;color:#20683b;border:1px solid #b8dfc2;border-radius:7px;padding:3px 6px;font-weight:800}.move-list{display:flex;gap:5px;flex-wrap:wrap;max-width:250px}.move-chip{display:inline-flex;align-items:center;gap:4px;padding:4px 7px;border-radius:7px;font-size:12px;font-weight:800;border:1px solid transparent;white-space:nowrap}.move-up{background:#dff2e4;color:#20683b;border-color:#b8dfc2}.move-down{background:#fbe4e1;color:#a13e36;border-color:#f0c3bd}.move-flat{background:#fff0c9;color:#835a0b;border-color:#f0dda0}.spread-up{background:#dff2e4;color:#20683b}.spread-down{background:#fbe4e1;color:#a13e36}.spread-flat{background:#fff0c9;color:#835a0b}.subtle{font-size:11px;color:var(--muted);margin-top:4px}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.stat{padding:12px;border:1px solid var(--line);border-radius:12px;background:#fbfcfb}.stat strong{display:block;font-size:24px}.stat span{font-size:12px;color:var(--muted)}
+table{border-collapse:collapse;width:100%;font-size:14px}th,td{text-align:left;padding:10px 9px;border-bottom:1px solid var(--line);vertical-align:top}th{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}.league{color:var(--muted);font-size:12px;margin-top:3px}.small{font-size:12px;color:var(--muted)}.diag{white-space:pre-wrap;font:12px/1.55 ui-monospace,SFMono-Regular,Consolas,monospace;background:#f7f9f7;border:1px solid var(--line);border-radius:10px;padding:12px;max-height:260px;overflow:auto}\n.pred-signal-inline{margin:8px 0;padding:10px;border:1px solid var(--line);border-radius:10px;background:#fff}.pred-signal-inline .small{margin-top:5px}.pred-market-meta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:9px 0}.pred-meta-card{border:1px solid var(--line);border-radius:10px;padding:9px;background:#fff;min-width:0}.pred-meta-card .meta-label{display:block;font-size:10px;font-weight:850;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:5px}.pred-meta-card .meta-values{font-size:16px;font-weight:900;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}.quota-move-up{color:#b42318;background:#fde8e7;border-radius:6px;padding:2px 5px}.quota-move-down{color:#187344;background:#e1f4e7;border-radius:6px;padding:2px 5px}.quota-move-flat{color:#835a0b;background:#fff0c9;border-radius:6px;padding:2px 5px}.pred-meta-card .meta-note{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.35}.pred-explain{font-size:11px;color:var(--muted);margin:5px 0 8px;line-height:1.4}.pred-patterns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:8px}.predbox{border:1px solid var(--line);border-radius:10px;padding:10px;background:#fff}.predbox b{display:block;font-size:13px}.predbox strong{font-size:23px}.predbox small{display:block;color:var(--muted)}
+@media(max-width:760px){main{padding:12px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.stats{grid-template-columns:1fr 1fr}.table-wrap{overflow-x:auto}table{min-width:650px}}
+@media(max-width:430px){.grid{grid-template-columns:1fr 1fr}.panel{padding:12px}}
+
+@media(max-width:700px){
+  .table-wrap{overflow-x:auto}
+  table{font-size:12px;min-width:610px}
+  th,td{padding:8px 7px;vertical-align:top}
+  th{font-size:11px;line-height:1.25}
+  td:first-child{min-width:145px;max-width:165px}
+  td:nth-child(2){min-width:120px}
+  td:nth-child(3){min-width:105px}
+  td:nth-child(4),td:nth-child(5){min-width:130px;white-space:normal}
+  .value-pair{gap:3px}
+  .value-chip{padding:4px 7px;border-radius:8px;font-size:12px;min-height:0}
+  .value-pair .value-chip:nth-child(2){padding:3px 6px;gap:4px;font-size:11px;line-height:1.1}
+  .value-label{font-size:10px}
+  .total-step-up{padding:3px 5px;font-size:11px;border-radius:6px}
+  .tag{padding:4px 6px;font-size:11px;white-space:normal;line-height:1.25}
+  .small{font-size:11px;line-height:1.35}
+  .league{font-size:11px;line-height:1.35}
+  .quota-current-good{padding:3px 5px}
+  .add-match{width:25px;height:25px;font-size:18px;margin-left:3px}
+}
+
+
+.pattern-defs{margin:8px 0 0;padding-left:18px}.pattern-defs li{margin:5px 0;font-size:13px;line-height:1.35}.pattern-results{display:grid;grid-template-columns:1fr;gap:10px;margin:10px 0 18px}
+.pattern-card{border:1px solid var(--line);border-radius:10px;padding:12px;background:var(--panel)}
+.pattern-card h4{margin:0 0 7px;font-size:14px}
+.pattern-card .pattern-meta{font-size:12px;color:var(--muted);margin:4px 0}
+.pattern-card .pattern-score{font-weight:800;font-size:17px}
+.pattern-card .pattern-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.pattern-tag{border:1px solid var(--line);border-radius:7px;padding:3px 6px;font-size:11px}
+.pattern-card.good{border-color:#b8dfc2}.pattern-card.mid{border-color:#f0dda0}.pattern-card.bad{border-color:#f0c3bd}
+.pattern-actions{display:flex;gap:6px;flex-wrap:wrap}
+.pattern-wl{min-width:70px;padding:5px;border:1px solid var(--line);border-radius:7px;background:#fff;font-weight:800}
+.match-pattern{margin-top:7px;padding:8px;border:1px solid var(--line);border-radius:9px;background:#fbfcfb}.pattern-win-rate{display:inline-flex;align-items:center;gap:5px;margin:3px 0 5px;padding:4px 8px;border-radius:8px;background:#dff2e4;color:#20683b;border:1px solid #b8dfc2;font-size:15px;font-weight:900}.pattern-win-rate.low{background:#fff0c9;color:#835a0b;border-color:#f0dda0}.pattern-win-rate .pct{font-size:20px}.pattern-no-data{display:inline-block;margin-top:4px;padding:3px 6px;border-radius:6px;background:#fff0c9;color:#835a0b;font-weight:800}
+.match-pattern-below{margin-top:9px;width:calc(100vw - 86px);max-width:900px;min-width:0;position:relative;z-index:1}.match-pattern-below .pred-patterns{margin-top:0;padding:8px;background:#f7faf8}.match-pattern-below .pred-patterns-title{font-size:10px}.match-pattern-below .pred-pattern-foot{max-width:520px}
+.pred-patterns{margin-top:9px;padding:9px;border:1px solid var(--line);border-radius:11px;background:#f8faf8}.pred-patterns-title{font-size:11px;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:7px}.pred-pattern-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;align-items:stretch;width:100%}.pred-pattern-item{border:1px solid var(--line);border-radius:9px;padding:7px;background:#fff;min-width:0}.pred-pattern-item .market{font-size:10px;line-height:1.25;color:var(--muted);min-height:25px}.pred-pattern-item .pct{font-size:19px;font-weight:900;color:#237b52;line-height:1.15;margin:3px 0}.pred-pattern-item .pct.low{color:#986d19}.pred-pattern-item .pct.none{font-size:11px;color:#835a0b}.pred-pattern-item .sample{font-size:10px;color:var(--muted);line-height:1.3}.pred-pattern-foot{font-size:10px;color:var(--muted);margin-top:7px;line-height:1.35}@media(max-width:700px){.match-pattern-below{width:calc(100vw - 70px);max-width:none}.pred-pattern-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;overflow:visible}.pred-pattern-item{padding:6px;overflow-wrap:anywhere}.pred-pattern-item .market{font-size:9px;min-height:30px}.pred-pattern-item .pct{font-size:16px}.pred-pattern-item .sample{font-size:9px}}
+
+
+.archive-toolbar{display:grid;grid-template-columns:minmax(180px,1fr) minmax(140px,190px) minmax(130px,170px);gap:9px;margin:14px 0 8px;align-items:center}
+.archive-toolbar input,.archive-toolbar select{width:100%;min-width:0;padding:10px 11px;border:1px solid #cbd5cb;border-radius:10px;background:#fff;color:var(--ink);font:inherit}
+.archive-info{font-size:12px;color:var(--muted);margin:6px 0 10px}
+.pagination{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:13px;flex-wrap:wrap}.pagination span{font-size:12px;color:var(--muted);font-weight:750;min-width:100px;text-align:center}.pagination button{padding:8px 11px}.pagination button:disabled{opacity:.4;cursor:not-allowed}
+.pattern-results{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.pattern-card{border-radius:14px;padding:15px;box-shadow:0 3px 12px #1b2b1d08;position:relative;overflow:hidden}
+.pattern-card:before{content:"";position:absolute;inset:0 auto 0 0;width:4px;background:#d4a84b}
+.pattern-card.good:before{background:#31945b}.pattern-card.bad:before{background:#cc6258}.pattern-card.mid:before{background:#d4a84b}
+.pattern-card h4{font-size:14px;line-height:1.45;margin:0 0 10px;padding-left:3px}
+.pattern-card .pattern-score{font-size:12px;display:inline-flex;padding:5px 8px;background:#f0f4f0;border-radius:8px;margin-bottom:8px}
+.pattern-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin:9px 0}
+.pattern-metric{border:1px solid var(--line);border-radius:10px;padding:9px;background:#fbfcfb;min-width:0}
+.pattern-metric span{display:block;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.04em}
+.pattern-metric b{display:block;font-size:17px;margin-top:3px;overflow-wrap:anywhere}
+.pattern-rate{display:flex;align-items:center;justify-content:space-between;gap:8px;border-radius:11px;padding:10px 12px;background:#edf6ef;border:1px solid #cce4d1;margin:8px 0}
+.pattern-rate strong{font-size:25px;color:#237b52;line-height:1}.pattern-rate.no-rate{background:#fff5dc;border-color:#f0dda0}.pattern-rate.no-rate strong{font-size:14px;color:#835a0b}
+.pattern-card .pattern-meta{line-height:1.4}.pattern-tags{margin-top:10px}.pattern-tag{background:#f7f9f7;padding:5px 8px;border-radius:8px}
+@media(max-width:700px){.archive-toolbar{grid-template-columns:1fr 1fr}.archive-toolbar input{grid-column:1/-1}.pattern-results{grid-template-columns:1fr}.pattern-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}.pattern-metric{padding:7px}.pattern-metric b{font-size:15px}.pagination{gap:7px}.pagination button{padding:8px}}
+
+
+/* Tabella Trader integrata — modulo indipendente */
+#traderTableModule[hidden]{display:none!important}
+#traderTableModule{margin:18px 0 26px;border:1px solid #d8dfd9;border-radius:12px;background:#fff;color:#26332b;overflow:hidden}
+#traderTableModule *{box-sizing:border-box}
+#traderTableModule .tt-head{background:#263b30;color:#fff;padding:15px 16px;display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
+#traderTableModule .tt-head h2{margin:0;font-size:19px}
+#traderTableModule .tt-head p{margin:4px 0 0;font-size:12px;opacity:.82}
+#traderTableModule .tt-body{padding:14px}
+#traderTableModule .tt-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+#traderTableModule .tt-field{border:1px solid #e0e5e1;border-radius:8px;padding:10px;background:#f8faf8;min-width:0}
+#traderTableModule .tt-field label{display:block;font-size:10px;font-weight:800;letter-spacing:.04em;color:#657269;margin-bottom:6px}
+#traderTableModule input,#traderTableModule select,#traderTableModule textarea{width:100%;min-width:0;border:1px solid #cbd5cd;border-radius:6px;padding:9px;background:#fff;color:#26332b;font:inherit;font-size:14px}
+#traderTableModule .tt-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin:12px 0}
+#traderTableModule .tt-kpi{border:1px solid #e0e5e1;background:#f8faf8;border-radius:8px;padding:11px}
+#traderTableModule .tt-kpi span{display:block;font-size:10px;color:#657269;font-weight:800;text-transform:uppercase}
+#traderTableModule .tt-kpi strong{display:block;font-size:19px;margin-top:5px;overflow-wrap:anywhere}
+#traderTableModule .tt-section-title{font-size:14px;font-weight:900;margin:18px 0 8px}
+#traderTableModule .tt-table-wrap{overflow-x:auto;border:1px solid #e0e5e1;border-radius:8px}
+#traderTableModule table{border-collapse:collapse;width:100%;min-width:760px;font-size:12px}
+#traderTableModule th{background:#edf2ee;text-align:left;padding:9px;white-space:nowrap}
+#traderTableModule td{padding:6px;border-top:1px solid #e8ece9;vertical-align:middle}
+#traderTableModule td input{padding:7px;font-size:12px;min-width:80px}
+#traderTableModule .tt-btn{border:0;border-radius:7px;padding:10px 12px;font-weight:800;font-size:12px;cursor:pointer;background:#e7eee8;color:#294332}
+#traderTableModule .tt-btn.primary{background:#356849;color:#fff}
+#traderTableModule .tt-btn.added{background:#e4f2e8;color:#20683b;border:1px solid #b8dfc2}
+#traderTableModule .tt-btn.danger{background:#f8e8e5;color:#923d32}
+#traderTableModule .tt-actions{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+#traderTableModule .tt-positive{color:#287346!important}
+#traderTableModule .tt-negative{color:#b34438!important}
+#traderTableModule .tt-note{font-size:11px;color:#6c776f;line-height:1.45}
+#traderTableModule .tt-journal{display:grid;grid-template-columns:160px 1fr;gap:10px}
+#traderTableModule .tt-chart{width:100%;height:230px;border:1px solid #e0e5e1;border-radius:8px;background:#fff}
+@media(max-width:650px){#traderTableModule .tt-grid,#traderTableModule .tt-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}#traderTableModule .tt-body{padding:10px}#traderTableModule .tt-kpi strong{font-size:16px}#traderTableModule .tt-journal{grid-template-columns:1fr}}
+
+
+</style>
+</head>
+<body>
+<main>
+ <div class="top"><div><div class="kicker">Goal Edge · v39 · Filtro match verdi</div><h1>AsianOdds HT</h1><p>Mercati HT · Over 0.5 · Over 1.5 · Gol casa · Gol ospite</p></div><div class="top-actions"><a class="asianodds-btn" href="https://asianodds.com/en/past-games" target="_blank" rel="noopener noreferrer">↗ AsianOdds · Past Games</a><button id="toggleTrader" class="secondary">Tabella Trader</button><button id="togglePatterns" class="pattern-btn">Pattern</button><button id="toggleArchive" class="archive-btn">Archivio <span id="archiveCount">0</span></button><span class="pill">4 mercati HT · Pattern verificabili</span></div></div>
+
+ <section class="panel">
+  <h2>Incolla dati AsianOdds HT</h2>
+  <label for="raw">Testo copiato dal sito</label>
+  <textarea id="raw" placeholder="Incolla qui tutto il testo copiato dalla sezione HT di AsianOdds, comprese le righe delle partite e i valori Open / Total / Current…"></textarea>
+  <div class="actions">
+   <button id="analyze">Analizza match</button>
+   <span class="flow-arrow" aria-hidden="true">→</span>
+   <button id="savePatterns" class="secondary" disabled>Salva in Pattern</button>
+   <span class="flow-arrow" aria-hidden="true">→</span>
+   <button id="analyzePredictions" class="predict-btn" disabled>Analizza pronostici</button>
+   <button class="secondary" id="copy" disabled>Copia risultati</button>
+   <button class="secondary" id="clear">Svuota</button>
+  </div>
+  <p class="small">Procedura guidata: <b>1.</b> Analizza match → <b>2.</b> Salva in Pattern → <b>3.</b> Analizza pronostici usando lo storico aggiornato. Se le colonne non sono riconosciute con certezza, il motore segnala i dati mancanti.</p>
+ </section>
+ <section class="panel"><div class="stats">
+  <div class="stat"><strong id="count">0</strong><span>Partite riconosciute</span></div>
+  <div class="stat"><strong id="known">0</strong><span>Partite con Total/quote leggibili</span></div>
+  <div class="stat"><strong id="missing">0</strong><span>Da verificare</span></div>
+ </div></section>
+ <div id="message" class="notice">Nessuna percentuale verrà inventata. Il motore classifica il movimento Total e il range quota solo quando i campi sono riconosciuti con sufficiente certezza.</div>
+ <section class="panel"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap"><h2 style="margin:0">Risultati</h2><div style="display:flex;gap:8px;flex-wrap:wrap"><button id="filterGreen" class="secondary" type="button">✓ Solo match verdi</button><button id="showAllMatches" class="secondary" type="button" hidden>Mostra tutti</button></div></div><p id="filterInfo" class="small">Dopo “Analizza match”, filtra i match con segnale Over 0.5 HT positivo/forte; lo storico ≥80% viene aggiunto quando disponibile.</p><div class="table-wrap"><table><thead><tr><th>Partita</th><th>Total HT · Open → Current</th></tr></thead><tbody id="rows"><tr><td colspan="2" class="small">Incolla i dati e premi “Analizza match”.</td></tr></tbody></table></div></section>
+
+ <section class="panel" id="patternPanel" hidden>
+   <div class="top"><h2>Laboratorio Pattern · Total HT</h2><button class="secondary" id="closePatterns">Chiudi Pattern</button></div>
+   <p class="small">Laboratorio dedicato ai quattro mercati: Over 0.5 HT, Over 1.5 HT, Over 0.5 HT squadra casa e Over 0.5 HT squadra ospite. Le percentuali si basano solo su esiti verificati e sono mostrate separatamente per mercato quando sono disponibili i dati necessari.</p>
+   <label for="patternMarket"><b>Mercato per le percentuali pattern</b></label>
+   <select id="patternMarket" style="width:100%;margin:6px 0 12px;padding:10px;border:1px solid var(--line);border-radius:9px;background:#fff"><option value="o05">Over 0.5 HT</option><option value="o15">Over 1.5 HT</option><option value="home">Over 0.5 HT squadra casa</option><option value="away">Over 0.5 HT squadra ospite</option></select>
+   <p class="small">Procedura rapida: incolla i dati nel campo principale, premi <b>Analizza partite</b>, poi <b>Salva in Pattern</b>. Le partite riconosciute vengono trasferite direttamente al database Pattern; i duplicati vengono ignorati.</p>
+   <p id="patternMessage" class="small">Nessuno storico analizzato.</p>
+   <div class="archive-stats" id="patternStats">
+    <div class="stat"><span>Partite salvate</span><b id="patternTotal">0</b></div>
+    <div class="stat"><span>Pattern trovati</span><b id="patternCount">0</b></div>
+    <div class="stat"><span>Campione con esito</span><b id="patternSettled">0</b></div>
+    <div class="stat"><span>Win</span><b id="patternWins">0</b></div>
+    <div class="stat"><span>Lose</span><b id="patternLosses">0</b></div>
+   </div>
+   <h3>Come leggere i pattern</h3>
+   <div class="pattern-card">
+    <p><b>Ogni occorrenza</b> è una partita che rientra nella configurazione descritta. Non significa che sia una vittoria.</p>
+    <ul class="pattern-defs">
+     <li><b>Total Open → Total Current:</b> mostra il valore iniziale, quello attuale e la variazione, ad esempio 1.00 → 1.25 (+0.25).</li>
+     <li><b>Quota Open → Quota Current:</b> mostra la quota iniziale e quella attuale. Per raggruppare quote simili, il motore usa fasce arrotondate al decimo (es. circa 1.8).</li>
+     <li><b>Configurazione:</b> una combinazione è definita dalla coppia di valori Total e dalle fasce delle due quote. Le occorrenze indicano quante partite rientrano nella stessa combinazione.</li>
+     <li><b>Win %:</b> Win ÷ (Win + Lose), usando solo risultati HT effettivamente riconosciuti.</li>
+    </ul>
+    <p class="small">La quota associata alla Total viene trattata come quota Over estratta dalla sequenza Total di AsianOdds; verificare sempre la diagnostica contro la colonna originale. Le percentuali dei mercati sono separate: O0.5, O1.5, gol casa e gol ospite. Le combinazioni con “+” richiedono che tutte le condizioni indicate siano vere nella stessa partita. La % Win è calcolata solo sugli esiti HT conosciuti: Win ÷ (Win + Lose).</p>
+   </div>
+   <h3>Pattern individuati automaticamente</h3>
+   <div id="patternResults" class="pattern-results"><div class="archive-empty">Incolla uno storico e premi Analizza Pattern.</div></div>
+   <h3>Storico Pattern salvato</h3>
+   <p class="small">I dati vengono salvati nel browser di questo dispositivo. Gli esiti dei quattro mercati vengono ricavati dal punteggio HT quando presente; l’esito manuale W/L resta riferito all’Over 0.5 HT. Le righe senza punteggio HT non contribuiscono alle percentuali degli altri mercati.</p>
+   <div class="archive-toolbar">
+    <input id="patternSearch" type="search" placeholder="Cerca squadra, campionato o data…" aria-label="Cerca nello storico Pattern">
+    <select id="patternResultFilter" aria-label="Filtra esito Pattern"><option value="all">Tutti gli esiti</option><option value="pending">Da verificare</option><option value="W">Win</option><option value="L">Lose</option></select>
+    <select id="patternPageSize" aria-label="Partite per pagina"><option value="25">25 per pagina</option><option value="50">50 per pagina</option><option value="100">100 per pagina</option></select>
+  </div>
+  <div id="patternArchiveInfo" class="archive-info">0 partite</div>
+  <div class="table-wrap"><table><thead><tr><th>Partita</th><th>Total Open → Current</th><th>Quota Over Total HT Open → Current</th><th>AH rilevato</th><th>Score FT (HT)</th><th>Esito Over 0.5 HT</th><th>Azioni</th></tr></thead><tbody id="patternArchiveRows"><tr><td colspan="7" class="small">Nessuna partita salvata.</td></tr></tbody></table></div>
+  <div class="pagination"><button class="secondary" id="patternPrev">← Precedente</button><span id="patternPageLabel">Pagina 1 di 1</span><button class="secondary" id="patternNext">Successiva →</button></div>
+ </section>
+
+ <section class="panel" id="archivePanel" hidden><div class="top"><h2>Archivio partite salvate</h2><button class="secondary" id="closeArchive">Chiudi archivio</button></div><p class="small">Le partite restano salvate in questo browser/dispositivo anche dopo aver chiuso la pagina. Per ogni evento seleziona W oppure L quando l’esito è noto.</p><div class="archive-stats" id="archiveStats"><div class="stat"><span>Eventi in archivio</span><b id="statTotal">0</b></div><div class="stat"><span>Win</span><b id="statWin">0</b></div><div class="stat"><span>Lose</span><b id="statLose">0</b></div><div class="stat"><span>Win %</span><b id="statWinPct">—</b></div><div class="stat"><span>Lose %</span><b id="statLosePct">—</b></div></div><div class="archive-toolbar">
+  <input id="archiveSearch" type="search" placeholder="Cerca squadra, campionato o data…" aria-label="Cerca nell’archivio partite">
+  <select id="archiveResultFilter" aria-label="Filtra esito"><option value="all">Tutti gli esiti</option><option value="pending">Da verificare</option><option value="W">Win</option><option value="L">Lose</option></select>
+  <select id="archivePageSize" aria-label="Partite per pagina"><option value="25">25 per pagina</option><option value="50">50 per pagina</option><option value="100">100 per pagina</option></select>
+ </div><div id="archiveInfo" class="archive-info">0 partite</div>
+ <div class="table-wrap"><table><thead><tr><th>Partita</th><th>Open → Current Total</th><th>Quota Over Total HT Open → Current</th><th>Over 0.5 HT</th><th>Over 1.5 HT</th><th>Esito W/L</th><th>Azioni</th></tr></thead><tbody id="archiveRows"><tr><td colspan="7" class="small">Archivio vuoto.</td></tr></tbody></table></div>
+ <div class="pagination"><button class="secondary" id="archivePrev">← Precedente</button><span id="archivePageLabel">Pagina 1 di 1</span><button class="secondary" id="archiveNext">Successiva →</button></div></section>
+ <section class="panel"><h2>Diagnostica</h2><div id="diag" class="diag">In attesa dei dati.</div><div class="actions"><button class="secondary" id="copyDiag">Copia diagnostica</button></div></section>
+</main>
+<section id="traderTableModule" hidden>
+ <div class="tt-head">
+  <div><h2>Tabella Trader · Money Management</h2><p>Gestione cassa, target giornaliero, sessioni, movimenti e diario operativo</p></div>
+  <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><span style="font-size:11px;font-weight:800">DATI SALVATI NEL DISPOSITIVO</span><button class="tt-btn" id="ttCloseModule" type="button">Chiudi ×</button></div>
+ </div>
+ <div class="tt-body">
+  <div class="tt-section-title">Pronostici aggiunti da Goal Edge</div>
+  <p class="tt-note">Le partite aggiunte dal box Pronostico compaiono qui. Puoi aggiornare l'esito quando è noto.</p>
+  <div class="tt-table-wrap"><table style="min-width:680px"><thead><tr><th>Data</th><th>Partita</th><th>Mercato / segnale</th><th>Total</th><th>Quota</th><th>Esito</th><th></th></tr></thead><tbody id="ttPicksRows"><tr><td colspan="7">Nessun pronostico aggiunto.</td></tr></tbody></table></div>
+  <div class="tt-section-title">Gestione cassa</div>
+  <div class="tt-grid">
+   <div class="tt-field"><label for="ttInitialBank">CASSA INIZIALE (€)</label><input id="ttInitialBank" type="number" min="0" step="0.01" value="200"></div>
+   <div class="tt-field"><label for="ttTarget">TARGET GIORNALIERO (%)</label><select id="ttTarget"><option>1</option><option>2</option><option>3</option><option>4</option><option selected>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></div>
+   <div class="tt-field"><label for="ttStake">STAKE CASSA (%)</label><select id="ttStake"><option>1</option><option>2</option><option>3</option><option>4</option><option selected>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></div>
+   <div class="tt-field"><label for="ttStartDate">DATA INIZIALE</label><input id="ttStartDate" type="date"></div>
+  </div>
+  <div class="tt-kpis">
+   <div class="tt-kpi"><span>Cassa aggiornata</span><strong id="ttBalance">€ 200,00</strong></div>
+   <div class="tt-kpi"><span>Profitto / perdita netta</span><strong id="ttNet">€ 0,00</strong></div>
+   <div class="tt-kpi"><span>Rendimento su cassa iniziale</span><strong id="ttYield">0,00%</strong></div>
+   <div class="tt-kpi"><span>Stake indicativo attuale</span><strong id="ttStakeValue">€ 10,00</strong></div>
+  </div>
+  <div class="tt-note">Lo stake è un riferimento di gestione della cassa, non una garanzia di profitto. Il profitto teorico giornaliero è calcolato sul saldo di inizio giornata; inserisci nel risultato effettivo il P/L netto della sessione, dopo le commissioni.</div>
+  <div class="tt-section-title">Sessioni di trading · 31 giorni</div>
+  <div class="tt-table-wrap"><table><thead><tr><th>Giorno</th><th>Cassa inizio</th><th>Target €</th><th>Stake indicativo €</th><th>Profitto / perdita €</th><th>Esito target</th><th>Cassa fine</th></tr></thead><tbody id="ttSessions"></tbody></table></div>
+  <div class="tt-section-title">Diario di bordo</div>
+  <div class="tt-journal">
+   <div class="tt-field"><label for="ttJournalDate">DATA NOTA</label><input id="ttJournalDate" type="date"></div>
+   <div class="tt-field"><label for="ttJournalText">NOTE / STRATEGIE / OSSERVAZIONI</label><textarea id="ttJournalText" rows="3" placeholder="Annota la sessione, la strategia e le osservazioni..."></textarea><div class="tt-actions"><button class="tt-btn primary" id="ttSaveNote">SALVA NOTA</button></div></div>
+  </div>
+  <div class="tt-section-title">Depositi e prelievi</div>
+  <div class="tt-grid">
+   <div class="tt-field"><label for="ttMoveDate">DATA MOVIMENTO</label><input id="ttMoveDate" type="date"></div>
+   <div class="tt-field"><label for="ttMoveType">TIPO</label><select id="ttMoveType"><option value="deposit">Deposito</option><option value="withdraw">Prelievo</option></select></div>
+   <div class="tt-field"><label for="ttMoveAmount">IMPORTO (€)</label><input id="ttMoveAmount" type="number" min="0.01" step="0.01" placeholder="0,00"></div>
+   <div class="tt-field"><label for="ttMoveMethod">METODO / NOTE</label><input id="ttMoveMethod" placeholder="Es. Betfair, banca..."></div>
+  </div>
+  <div class="tt-actions"><button class="tt-btn primary" id="ttAddMove">REGISTRA MOVIMENTO</button></div>
+  <div class="tt-table-wrap"><table style="min-width:500px"><thead><tr><th>Data</th><th>Tipo</th><th>Importo</th><th>Metodo / note</th><th></th></tr></thead><tbody id="ttMoves"></tbody></table></div>
+  <div class="tt-section-title">Andamento cassa e target · 31 giorni</div>
+  <svg id="ttChart" class="tt-chart" viewBox="0 0 900 230" role="img" aria-label="Grafico di cassa e target"></svg>
+  <div class="tt-section-title">Riepilogo periodo</div>
+  <div class="tt-kpis">
+   <div class="tt-kpi"><span>Giorni registrati</span><strong id="ttDays">0</strong></div>
+   <div class="tt-kpi"><span>Giornata migliore</span><strong id="ttBest">—</strong></div>
+   <div class="tt-kpi"><span>Giornata peggiore</span><strong id="ttWorst">—</strong></div>
+   <div class="tt-kpi"><span>Target raggiunti</span><strong id="ttTargetsHit">0</strong></div>
+  </div>
+  <div class="tt-actions">
+   <button class="tt-btn" id="ttExport">ESPORTA DATI JSON</button>
+   <button class="tt-btn" id="ttImport">IMPORTA DATI JSON</button><input id="ttImportFile" type="file" accept="application/json,.json" hidden>
+   <button class="tt-btn" id="ttCsv">ESPORTA SESSIONI CSV</button>
+   <button class="tt-btn danger" id="ttReset">AZZERA TABELLA</button>
+  </div>
+  <div class="tt-note">Nota: questa integrazione riproduce le funzionalità documentate della Tabella Trader, con una nuova implementazione indipendente. Non è il file Excel originale né una copia del suo codice. I dati sono conservati nel browser di questo dispositivo; esporta periodicamente un backup JSON.</div>
+ </div>
+</section>
+
+<script>
+(() => {
+ const $ = id => document.getElementById(id);
+ const esc = s => String(s ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const num = s => { const m=String(s??'').match(/[+-]?\d+(?:[.,]\d+)?/); return m?Number(m[0].replace(',','.')):null; };
+ const isDate=s=>/^\d{1,2}\/\d{1,2}\/\d{2,4}$/.test(s);
+ const isTime=s=>/^\d{1,2}:\d{2}$/.test(s);
+ const isCountdown=s=>/^\d+\s*h$/i.test(s);
+ const isNum=s=>/^[+-]?\d+(?:[.,]\d+)?(?:[↑↓])?$/.test(s);
+ const isMarket=s=>/^(?:1|X|2|GG|NG|HT|FT|Open|Current|Total|Over|Under|AH|O\/U|Asian Handicap)$/i.test(s);
+ const clean=s=>String(s).replace(/^⚽/,'').replace(/[⭐☆]/g,'').replace(/(?<=[A-Za-zÀ-ÿ])\d{4,5}$/,'').trim();
+ const isTeam=s=>{
+   const v=clean(s);
+   if(!/[A-Za-zÀ-ÿ]/.test(v)||isDate(v)||isTime(v)||isCountdown(v)||isMarket(v)||isNum(v)) return false;
+   if(/^(?:Overview|Odds|Predictions|Football|Tennis|Basketball|Baseball|Live|Results|Schedule|Panoramica|BONUS|REGISTRATI|VISITA IL SITO)$/i.test(v)) return false;
+   if(/^(?:Turkey|Moldova|Portugal|England|Italy|Spain|France|Germany|USA|Japan|China|Czech|Poland|Brazil|Argentina):/i.test(v)) return false;
+   return true;
+ };
+ function parseScoreToken(line){
+   // AsianOdds score column may be separated from team names by whitespace or line breaks.
+   const text=String(line||'').replace(/\u00a0/g,' ').replace(/[|]/g,' ');
+   const withHT=text.match(/(\d{1,2})\s*:\s*(\d{1,2})\s*\(\s*(\d{1,2})\s*:\s*(\d{1,2})\s*\)/);
+   if(withHT)return {ftHome:Number(withHT[1]),ftAway:Number(withHT[2]),htHome:Number(withHT[3]),htAway:Number(withHT[4]),raw:withHT[0]};
+   const ft=text.match(/(\d{1,2})\s*:\s*(\d{1,2})(?!\s*\()/);
+   if(!ft)return null;
+   return {ftHome:Number(ft[1]),ftAway:Number(ft[2]),htHome:null,htAway:null,raw:ft[0]};
+ }
+ function stripScoreFromTeam(line){
+   return clean(String(line||'').replace(/\d{1,2}\s*:\s*\d{1,2}\s*(?:\(\s*\d{1,2}\s*:\s*\d{1,2}\s*\))?/,'').trim());
+ }
+ function parse(raw){
+   const lines=raw.split(/\r?\n/).map(s=>s.replace(/\u00a0/g,' ').replace(/\s+/g,' ').trim()).filter(Boolean);
+   const games=[];
+   const dateIndexes=[];
+   // Ignora le date storiche inserite da AsianOdds nel blocco quote.
+   lines.forEach((s,i)=>{
+     if(!isDate(s))return;
+     let hasTime=false, hasMarketBeforeTime=false;
+     for(let j=i+1;j<Math.min(lines.length,i+5);j++){
+       if(isDate(lines[j]))break;
+       if(lines[j]==='1' && lines[j+1]==='X' && lines[j+2]==='2'){hasMarketBeforeTime=true;break;}
+       if(isTime(lines[j])){hasTime=true;break;}
+     }
+     if(hasTime&&!hasMarketBeforeTime)dateIndexes.push(i);
+   });
+   for(let d=0;d<dateIndexes.length;d++){
+     const start=dateIndexes[d], end=dateIndexes[d+1]??lines.length, block=lines.slice(start,end);
+     let time=block.find(isTime)||'';
+     const candidates=[];
+     for(let j=1;j<Math.min(block.length,18);j++){
+       const s=block[j];
+       if(isTime(s)||isCountdown(s)||isMarket(s)||isNum(s)||/^[☆⭐🇦-🇿]/u.test(s)) continue;
+       const teamText=stripScoreFromTeam(s);
+       if(teamText && isTeam(teamText)) candidates.push(teamText);
+       if(candidates.length===2)break;
+     }
+     if(candidates.length<2) continue;
+     // League is the closest non-decoration text before the date.
+     let league='';
+     for(let j=start-1;j>=Math.max(0,start-12);j--){
+       const s=lines[j];
+       if(isTime(s)||isDate(s)||isNum(s)||isMarket(s)||isCountdown(s)||/^[☆⭐🇦-🇿]/u.test(s))continue;
+       if(/^[A-Za-zÀ-ÿ].*:/.test(s)||/^[A-Za-zÀ-ÿ].*(?:Cup|League|Division|U23|Liga|Championship|Qualification)/i.test(s)){league=s;break}
+     }
+     // Cerca la vera intestazione 1-X-2 (non una cifra isolata in altri dati).
+     let marketIndex=-1;
+     for(let i=0;i<block.length;i++){
+       if(block[i]==='1' && block[i+1]==='X' && block[i+2]==='2'){marketIndex=i;break;}
+       if(/^(?:1\s+X\s+2|1\s*\|\s*X\s*\|\s*2)$/i.test(block[i])){marketIndex=i;break;}
+     }
+     // AsianOdds appende dopo le quote la bandierina e il campionato della partita successiva.
+     // Queste righe non devono entrare nel mercato della partita corrente.
+     let marketEnd=block.length;
+     if(marketIndex>=0){
+       for(let j=marketIndex+1;j<block.length;j++){
+         if(/^[☆⭐]/u.test(block[j]) || /^🇦/u.test(block[j]) || /^🏳/u.test(block[j])){marketEnd=j;break;}
+         if(/^(?:Brazil|Paraguay|Colombia|Nicaragua|England|Italy|Spain|France|Germany|Portugal|Argentina|Chile|Mexico|USA|Turkey|Moldova|Japan|China|Czech|Poland|North & Central America):/i.test(block[j])){marketEnd=j;break;}
+       }
+     }
+     const marketLines=marketIndex>=0?block.slice(marketIndex,marketEnd):[];
+     const joinedScore=parseScoreToken(block.join(' '));
+     const scoreCandidates=block.map(s=>({line:s,score:parseScoreToken(s)})).filter(x=>x.score);
+     const scoreEntry=scoreCandidates.find(x=>x.score.htHome!==null) || scoreCandidates[0] || null;
+     const scoreLine=scoreEntry?.line||'';
+     const score=(joinedScore&&joinedScore.htHome!==null)?joinedScore:(scoreEntry?.score||joinedScore||null);
+     games.push({date:block[0],time,home:candidates[0],away:candidates[1],league,block,marketLines,score,scoreLine:scoreLine||''});
+   }
+   return {lines,games};
+ }
+ function getTotalCandidate(g){
+   const m=g.marketLines;
+   if(!m.length)return {ok:false,why:'Blocco 1X2 assente'};
+   // Flatten all whitespace-separated values, including multiple cells on the same clipboard line.
+   const flat=m.join(' ').replace(/[↑↓]/g,'').split(/\s+/).filter(Boolean);
+   const gg=flat.findIndex(t=>t==='GG');
+   const pre=flat.slice(0,gg>=0?gg:flat.length);
+   const ix=pre.findIndex((t,i)=>t==='1'&&pre[i+1]==='X'&&pre[i+2]==='2');
+   if(ix<0)return {ok:false,why:'Intestazione 1 X 2 non trovata'};
+   // Mantieni i placeholder —: eliminarli fa slittare gli indici delle colonne.
+   const tokens=pre.slice(ix+3).filter(t=>/^[+-]?\d+(?:[.,]\d+)?$/.test(t)||/^[—–-]+$/.test(t));
+   if(tokens.length<14)return {ok:false,why:`Attesi 14 valori (6 1X2, 4 AH, 4 Total); letti ${tokens.length}`,vals:tokens};
+   const vals=tokens.map(t=>/^[—–-]+$/.test(t)?null:Number(String(t).replace(',','.')));
+   const [openLine,openOdds,currentLine,currentOdds]=vals.slice(10,14);
+   const valid=[openLine,currentLine].every(x=>Number.isFinite(x)&&x>=0&&x<=5&&Math.abs(x*4-Math.round(x*4))<.001)&&[openOdds,currentOdds].every(x=>Number.isFinite(x)&&x>1&&x<10);
+   const spreadOpen=vals[6],spreadOpenOdds=vals[7],spreadCurrent=vals[8],spreadCurrentOdds=vals[9];
+   return {ok:valid,why:valid?'Sequenza 1X2 / spread / Total estratta':'Valori Total non validi',vals,openLine,openOdds,currentLine,currentOdds,spreadOpen,spreadOpenOdds,spreadCurrent,spreadCurrentOdds};
+ }
+ function signal(m,threshold){
+   const delta=+(m.currentLine-m.openLine).toFixed(2);
+   const qdelta=+(m.currentOdds-m.openOdds).toFixed(2);
+   const direction=delta>=.5?'RIALZO FORTE':delta>=.25?'RIALZO +0.25':delta<=-.25?'RIBASSO':'STABILE';
+   const quotaText=qdelta>0?'quota in rialzo (coerente con la linea)':qdelta<0?'quota in calo':'quota stabile';
+   if(delta<=-.25)return {name:'CONTRARIO OVER',detail:`Total in ribasso · ${quotaText}`,cls:'bad'};
+   if(delta===0)return {name:'NEUTRO',detail:`Total invariata · ${quotaText}`,cls:'mid'};
+   if(threshold===1.5 && m.currentLine<1.5)return {name:'SOGLIA NON RAGGIUNTA',detail:`Current Total ${m.currentLine.toFixed(2)}: sotto 1.50 · ${quotaText}`,cls:'mid'};
+   if(delta>=.5)return {name:m.currentOdds<1.86?'OVER FORTE':'OVER FORTE',detail:`Total in rialzo di +${delta.toFixed(2)} · ${quotaText}${m.currentOdds<1.86?' · quota Current sotto 1.86':''}`,cls:'good'};
+   if(delta>=.25){
+     if(threshold===1.5)return {name:'OVER POSITIVO',detail:`Total +0.25 · ${quotaText}${m.currentOdds<1.86?' · quota Current sotto 1.86':''}`,cls:'good'};
+     return {name:'OVER POSITIVO',detail:`Total +0.25 · ${quotaText}${m.currentOdds<1.86?' · quota Current sotto 1.86':''}`,cls:'good'};
+   }
+   return {name:'NEUTRO',detail:`Movimento Total insufficiente · ${quotaText}`,cls:'mid'};
+ }
+ const ARCHIVE_KEY='goal-edge-asianodds-ht-archive-v1';
+ let latestMatches=[]; let archivePage=1; let patternPage=1;
+ function makeKey(g){
+   return [g.date,g.time,g.home,g.away].join('|').toLocaleLowerCase();
+ }
+ function readArchive(){
+   try{const a=JSON.parse(localStorage.getItem(ARCHIVE_KEY)||'[]');return Array.isArray(a)?a:[]}
+   catch(e){return []}
+ }
+ function writeArchive(items){
+   try{localStorage.setItem(ARCHIVE_KEY,JSON.stringify(items));return true}
+   catch(e){$('message').textContent='Impossibile salvare: lo spazio di archiviazione del browser potrebbe essere bloccato.';return false}
+ }
+ function archiveMatch(key){
+   const g=latestMatches.find(x=>makeKey(x)===key);
+   if(!g || !g.metrics.ok)return;
+   const m=g.metrics, archive=readArchive(), id=makeKey(g);
+   if(archive.some(x=>x.id===id)){
+     $('message').textContent='Questa partita è già presente nell’archivio.';
+     return;
+   }
+   const o05=signal(m,.5), o15=signal(m,1.5);
+   archive.unshift({id,date:g.date,time:g.time,home:g.home,away:g.away,league:g.league||'Campionato non identificato',openLine:m.openLine,currentLine:m.currentLine,openOdds:m.openOdds,currentOdds:m.currentOdds,o05,o15,savedAt:new Date().toISOString()});
+   if(writeArchive(archive)){renderArchive();$('message').textContent=`Partita aggiunta all’archivio: ${g.home} – ${g.away}.`;}
+ }
+ function renderArchive(){
+   const archive=readArchive();
+   $('archiveCount').textContent=String(archive.length);
+   const wins=archive.filter(x=>x.result==='W').length, losses=archive.filter(x=>x.result==='L').length, settled=wins+losses;
+   $('statTotal').textContent=String(archive.length); $('statWin').textContent=String(wins); $('statLose').textContent=String(losses);
+   $('statWinPct').textContent=settled?`${(wins/settled*100).toFixed(1)}%`:'—'; $('statLosePct').textContent=settled?`${(losses/settled*100).toFixed(1)}%`:'—';
+   if(!archive.length){$('archiveRows').innerHTML='<tr><td colspan="7"><div class="archive-empty">Archivio vuoto. Premi il simbolo + accanto a una partita per salvarla.</div></td></tr>'; $('archiveInfo').textContent='0 partite'; $('archivePageLabel').textContent='Pagina 1 di 1'; $('archivePrev').disabled=$('archiveNext').disabled=true; return}
+   const query=($('archiveSearch')?.value||'').trim().toLocaleLowerCase(); const filter=$('archiveResultFilter')?.value||'all';
+   const filtered=archive.filter(x=>{const hay=[x.home,x.away,x.league,x.date,x.time].join(' ').toLocaleLowerCase();return (!query||hay.includes(query))&&(filter==='all'||(filter==='pending'?!x.result:x.result===filter))});
+   const size=Number($('archivePageSize')?.value||25), pages=Math.max(1,Math.ceil(filtered.length/size)); archivePage=Math.min(archivePage,pages); const shown=filtered.slice((archivePage-1)*size,archivePage*size);
+   $('archiveInfo').textContent=`Mostrate ${filtered.length?((archivePage-1)*size+1):0}–${Math.min(archivePage*size,filtered.length)} di ${filtered.length} risultati · ${archive.length} totali`;
+   $('archivePageLabel').textContent=`Pagina ${archivePage} di ${pages}`; $('archivePrev').disabled=archivePage<=1; $('archiveNext').disabled=archivePage>=pages;
+   if(!shown.length){$('archiveRows').innerHTML='<tr><td colspan="7"><div class="archive-empty">Nessuna partita corrisponde alla ricerca o al filtro selezionato.</div></td></tr>';return}
+   const label=v=>`<span class="tag ${esc(v.cls)}">${esc(v.name)}</span><div class="small">${esc(v.detail)}</div>`;
+   $('archiveRows').innerHTML=shown.map(x=>{
+     const td=Number(x.currentLine)-Number(x.openLine), cls=td>0?'value-up':td<0?'value-down':'value-flat', arrow=td>0?'↑':td<0?'↓':'→';
+     const currentOddsText=Number(x.currentOdds)<1.86?`<span class="quota-current-good">${Number(x.currentOdds).toFixed(2)}</span>`:Number(x.currentOdds).toFixed(2);
+     const match=`<b>${esc(x.home)} – ${esc(x.away)}</b><div class="league">${esc(x.league)} · ${esc(x.date)} ${esc(x.time)}</div>`;
+     const total=`<div class="value-pair"><span class="value-chip value-flat"><span class="value-label">Open</span> ${Number(x.openLine).toFixed(2)}</span><span class="value-chip ${cls}"><span class="value-label">Current</span> ${Number(x.currentLine).toFixed(2)} ${arrow}</span></div><div class="small">${td>0?`<span class="total-step-up">Var.Total: +${td.toFixed(2)}</span>`:`Var.Total: ${td>=0?'+':''}${td.toFixed(2)}`}</div>`;
+     const result=x.result||'';
+     return `<tr><td>${match}</td><td>${total}</td><td>${Number(x.openOdds).toFixed(2)} → ${currentOddsText}</td><td>${label(x.o05)}</td><td>${label(x.o15)}</td><td><select class="wl-select ${result==='W'?'win':result==='L'?'lose':''}" data-result="${esc(x.id)}" aria-label="Esito per ${esc(x.home)} contro ${esc(x.away)}"><option value="" ${!result?'selected':''}>Da verificare</option><option value="W" ${result==='W'?'selected':''}>W — Win</option><option value="L" ${result==='L'?'selected':''}>L — Lose</option></select></td><td><button class="delete-match" data-delete="${esc(x.id)}">Elimina</button></td></tr>`;
+   }).join('');
+ }
+ function deleteArchiveMatch(id){
+   const next=readArchive().filter(x=>x.id!==id);
+   if(writeArchive(next)){renderArchive();$('message').textContent='Partita eliminata dall’archivio.';}
+ }
+
+ const PATTERN_KEY='goal-edge-pattern-lab-v1';
+ let currentPatternBatch=[];
+ let predictionsMode=false; let greenOnly=false;
+ function readPatternStore(){try{const a=JSON.parse(localStorage.getItem(PATTERN_KEY)||'[]');return Array.isArray(a)?a:[]}catch(e){return []}}
+ function writePatternStore(a){try{localStorage.setItem(PATTERN_KEY,JSON.stringify(a));return true}catch(e){$('patternMessage').textContent='Non riesco a salvare: spazio browser non disponibile.';return false}}
+ function patternId(g){return [g.date,g.time,g.home,g.away].join('|').toLocaleLowerCase()}
+ function ahCandidate(g){
+   const m=g.marketLines||[];
+   const flat=m.join(' ').replace(/[↑↓]/g,' ').split(/\s+/).filter(Boolean);
+   const gg=flat.findIndex(t=>t==='GG'), pre=flat.slice(0,gg>=0?gg:flat.length);
+   const ix=pre.findIndex((t,i)=>t==='1'&&pre[i+1]==='X'&&pre[i+2]==='2');
+   if(ix<0)return null;
+   const tokens=pre.slice(ix+3).filter(t=>/^[+-]?\d+(?:[.,]\d+)?$/.test(t)||/^[—–-]+$/.test(t));
+   if(tokens.length<14)return null;
+   const vals=tokens.map(t=>/^[—–-]+$/.test(t)?null:Number(String(t).replace(',','.')));
+   return {open:vals[6],openOdds:vals[7],current:vals[8],currentOdds:vals[9]};
+ }
+ function makePatternRecord(g){
+   const m=g.metrics||getTotalCandidate(g);
+   const ah=ahCandidate(g);
+   const score=g.score||null;
+   const htTotal=score&&score.htHome!==null&&score.htAway!==null?score.htHome+score.htAway:null;
+   const result=htTotal===null?'':(htTotal>=1?'W':'L');
+   // Keep completed score rows even when that pasted source contains no odds/Total columns.
+   if(!m.ok && !score)return null;
+   return {id:patternId(g),date:g.date,time:g.time,home:g.home,away:g.away,league:g.league||'',
+     marketAvailable:!!m.ok,
+     openLine:m.ok?m.openLine:null,currentLine:m.ok?m.currentLine:null,
+     openOdds:m.ok?m.openOdds:null,currentOdds:m.ok?m.currentOdds:null,
+     ahOpen:ah?.open??null,ahCurrent:ah?.current??null,ahOpenOdds:ah?.openOdds??null,ahCurrentOdds:ah?.currentOdds??null,
+     ftHome:score?.ftHome??null,ftAway:score?.ftAway??null,htHome:score?.htHome??null,htAway:score?.htAway??null,
+     ftScore:score?`${score.ftHome}:${score.ftAway}`:'',htScore:score&&score.htHome!==null?`${score.htHome}:${score.htAway}`:'',result,
+     overOpenOdds:m.ok?m.openOdds:null,overCurrentOdds:m.ok?m.currentOdds:null,
+     marketResults:score&&score.htHome!==null&&score.htAway!==null?{o05:(score.htHome+score.htAway)>=1?'W':'L',o15:(score.htHome+score.htAway)>=2?'W':'L',home:score.htHome>=1?'W':'L',away:score.htAway>=1?'W':'L'}:{o05:'',o15:'',home:'',away:''}};
+ }
+ function classifyPattern(x){
+   const td=+(x.currentLine-x.openLine).toFixed(2);
+   const qOpen=Number(x.openOdds), qCurrent=Number(x.currentOdds);
+   const parts=[];
+   const lineLabel=Number.isFinite(x.openLine)&&Number.isFinite(x.currentLine)
+     ? `Total Open ${x.openLine.toFixed(2)} → Current ${x.currentLine.toFixed(2)} (${td>0?'+':''}${td.toFixed(2)})`
+     : 'Total non disponibile';
+   const qLabel=Number.isFinite(qOpen)&&Number.isFinite(qCurrent)
+     ? `Quota Over Total HT Open ${qOpen.toFixed(2)} → Current ${qCurrent.toFixed(2)} (${qCurrent-qOpen>0?'+':''}${(qCurrent-qOpen).toFixed(2)})`
+     : 'Quote non disponibili';
+   parts.push(`${lineLabel} | ${qLabel}`);
+   return parts;
+ }
+ function getPatternGroups(data){
+   const groups=new Map();
+   const market=$('patternMarket')?.value||'o05';
+   const marketNames={o05:'Over 0.5 HT',o15:'Over 1.5 HT',home:'Over 0.5 HT squadra casa',away:'Over 0.5 HT squadra ospite'};
+   const outcome=x=>{if(x.marketResults&&x.marketResults[market])return x.marketResults[market];if(market==='o05')return x.result||'';if(x.htHome===null||x.htHome===undefined||x.htAway===null||x.htAway===undefined)return '';const h=Number(x.htHome),a=Number(x.htAway);return market==='o15'?(h+a>=2?'W':'L'):market==='home'?(h>=1?'W':'L'):(a>=1?'W':'L')};
+   data.forEach(x=>{
+     if(!Number.isFinite(x.openLine)||!Number.isFinite(x.currentLine)||!Number.isFinite(x.openOdds)||!Number.isFinite(x.currentOdds))return;
+     const td=+(x.currentLine-x.openLine).toFixed(2);
+     const qOpenBand=(Math.round(x.openOdds*10)/10).toFixed(1);
+     const qCurrentBand=(Math.round(x.currentOdds*10)/10).toFixed(1);
+     const key=`total:${x.openLine.toFixed(2)}>${x.currentLine.toFixed(2)}|q:${qOpenBand}>${qCurrentBand}`;
+     const desc=`Total Open ${x.openLine.toFixed(2)} → Total Current ${x.currentLine.toFixed(2)} (${td>0?'+':''}${td.toFixed(2)}); Quota Over Total HT Open circa ${qOpenBand} → Current circa ${qCurrentBand}`;
+     if(!groups.has(key))groups.set(key,{key,desc,items:[]});
+     groups.get(key).items.push(x);
+   });
+   return [...groups.values()].filter(g=>g.items.length>=3).map(g=>{
+     const wins=g.items.filter(x=>outcome(x)==='W').length;
+     const losses=g.items.filter(x=>outcome(x)==='L').length;
+     const settled=wins+losses;
+     return {...g,wins,losses,settled,winRate:settled?wins/settled:null,marketName:marketNames[market]};
+   }).sort((a,b)=>b.items.length-a.items.length || b.settled-a.settled);
+ }
+ function runPatternAnalysis(data){
+   const uniq=data.filter((x,i,a)=>a.findIndex(y=>y.id===x.id)===i);
+   const marketRows=uniq.filter(x=>x.marketAvailable && Number.isFinite(x.openLine) && Number.isFinite(x.currentLine) && Number.isFinite(x.openOdds) && Number.isFinite(x.currentOdds));
+   const groups=getPatternGroups(marketRows);
+   const stored=readPatternStore(), statsData=uniq, selected=$('patternMarket')?.value||'o05';
+   const outcome=x=>{if(x.marketResults&&x.marketResults[selected])return x.marketResults[selected];if(selected==='o05')return x.result||'';if(x.htHome===null||x.htHome===undefined||x.htAway===null||x.htAway===undefined)return '';const h=Number(x.htHome),a=Number(x.htAway);return selected==='o15'?(h+a>=2?'W':'L'):selected==='home'?(h>=1?'W':'L'):(a>=1?'W':'L')};
+   const wins=statsData.filter(x=>outcome(x)==='W').length, losses=statsData.filter(x=>outcome(x)==='L').length;
+   $('patternTotal').textContent=String(stored.length);
+   $('patternCount').textContent=String(groups.length);
+   $('patternSettled').textContent=String(wins+losses);
+   $('patternWins').textContent=String(wins);
+   $('patternLosses').textContent=String(losses);
+   if(!groups.length){$('patternResults').innerHTML='<div class="archive-empty">Nessun pattern ricorrente con almeno 3 occorrenze nei dati attuali. Aggiungi più storico; non vengono inventati risultati.</div>';return}
+   $('patternResults').innerHTML=groups.slice(0,30).map(g=>{
+     const confidence=g.settled>=100?'Campione ampio':g.settled>=50?'Campione discreto':g.settled>=20?'Campione in crescita':'Campione limitato';
+     const cls=g.settled>=30&&g.winRate!==null&&g.winRate>=.6?'good':g.settled>=30&&g.winRate!==null&&g.winRate<.45?'bad':'mid';
+     const rate=g.winRate===null?'<div class="pattern-rate no-rate"><span>Percentuale Win</span><strong>Non disponibile</strong></div>':`<div class="pattern-rate"><span><b>Win storico</b><br><small>${confidence}</small></span><strong>${(g.winRate*100).toFixed(1)}%</strong></div>`;
+     return `<div class="pattern-card ${cls}"><h4>${esc(g.desc)}</h4><div class="pattern-score">${esc(g.marketName)} · ${g.items.length} occorrenze totali</div>${rate}<div class="pattern-metrics"><div class="pattern-metric"><span>Win</span><b>${g.wins}</b></div><div class="pattern-metric"><span>Lose</span><b>${g.losses}</b></div><div class="pattern-metric"><span>Esiti mancanti</span><b>${g.items.length-g.settled}</b></div></div><div class="pattern-meta">Win % = Win ÷ (Win + Lose). Le occorrenze senza esito non entrano nel calcolo.</div><div class="pattern-tags"><span class="pattern-tag">${g.settled} esiti registrati</span><span class="pattern-tag">${confidence}</span></div></div>`;
+   }).join('');
+ }
+ function savePatternBatch(){
+   if(!currentPatternBatch.length){$('patternMessage').textContent='Prima incolla lo storico e premi Analizza Pattern.';return}
+   const items=readPatternStore(), known=new Set(items.map(x=>x.id));let added=0,duplicates=0;
+   currentPatternBatch.forEach(x=>{
+     if(known.has(x.id)){
+       duplicates++;
+       const old=items.find(y=>y.id===x.id);
+       if(old && x.htHome!==null && x.htHome!==undefined){old.ftHome=x.ftHome;old.ftAway=x.ftAway;old.htHome=x.htHome;old.htAway=x.htAway;old.ftScore=x.ftScore;old.htScore=x.htScore;old.result=x.result;}
+       return;
+     }
+     items.push(x);known.add(x.id);added++;
+   });
+   if(writePatternStore(items)){
+     $('patternMessage').textContent=`Salvate ${added} nuove partite; ${duplicates} duplicati ignorati.`; patternPage=1;
+     renderPatternArchive();
+     runPatternAnalysis(items);
+     $('analyzePredictions').disabled=false;
+     $('message').textContent += ' Pattern salvati/aggiornati: ora puoi analizzare i pronostici con lo storico aggiornato.';
+   }
+ }
+ function renderPatternArchive(){
+   const items=readPatternStore();
+   if(!items.length){$('patternArchiveRows').innerHTML='<tr><td colspan="7" class="small">Nessuna partita salvata.</td></tr>'; $('patternArchiveInfo').textContent='0 partite'; $('patternPageLabel').textContent='Pagina 1 di 1'; $('patternPrev').disabled=$('patternNext').disabled=true;return}
+   const query=($('patternSearch')?.value||'').trim().toLocaleLowerCase(), filter=$('patternResultFilter')?.value||'all';
+   const filtered=items.filter(x=>{const hay=[x.home,x.away,x.league,x.date,x.time].join(' ').toLocaleLowerCase();return (!query||hay.includes(query))&&(filter==='all'||(filter==='pending'?!x.result:x.result===filter))});
+   const size=Number($('patternPageSize')?.value||25), pages=Math.max(1,Math.ceil(filtered.length/size)); patternPage=Math.min(patternPage,pages); const shown=filtered.slice((patternPage-1)*size,patternPage*size);
+   $('patternArchiveInfo').textContent=`Mostrate ${filtered.length?((patternPage-1)*size+1):0}–${Math.min(patternPage*size,filtered.length)} di ${filtered.length} risultati · ${items.length} totali`;
+   $('patternPageLabel').textContent=`Pagina ${patternPage} di ${pages}`; $('patternPrev').disabled=patternPage<=1; $('patternNext').disabled=patternPage>=pages;
+   if(!shown.length){$('patternArchiveRows').innerHTML='<tr><td colspan="7"><div class="archive-empty">Nessuna partita corrisponde alla ricerca o al filtro selezionato.</div></td></tr>';return}
+   $('patternArchiveRows').innerHTML=shown.map(x=>{
+     const d=Number.isFinite(x.currentLine)&&Number.isFinite(x.openLine)?x.currentLine-x.openLine:null, arrow=d===null?'':d>0?'↑':d<0?'↓':'→';
+     const totalText=d===null?'Total non disponibile':`${Number(x.openLine).toFixed(2)} → ${Number(x.currentLine).toFixed(2)} ${arrow}`;
+     const oddsText=Number.isFinite(x.openOdds)&&Number.isFinite(x.currentOdds)?`${Number(x.openOdds).toFixed(2)} → ${Number(x.currentOdds).toFixed(2)}`:'—';
+     const ah=x.ahOpen===null?'—':`${Number(x.ahOpen).toFixed(2)} → ${Number(x.ahCurrent).toFixed(2)}`;
+     const res=x.result||''; const scoreText=x.ftScore?`${esc(x.ftScore)}${x.htScore?` (${esc(x.htScore)})`:''}`:'Risultato mancante';
+     return `<tr><td><b>${esc(x.home)} – ${esc(x.away)}</b><div class="league">${esc(x.league||'')} · ${esc(x.date)} ${esc(x.time)}</div></td><td>${totalText}</td><td>${oddsText}</td><td>${ah}</td><td>${scoreText}</td><td><select class="pattern-wl" data-pattern-result="${esc(x.id)}"><option value="" ${!res?'selected':''}>Da verificare</option><option value="W" ${res==='W'?'selected':''}>W — Win</option><option value="L" ${res==='L'?'selected':''}>L — Lose</option></select></td><td><button class="delete-match" data-pattern-delete="${esc(x.id)}">Elimina</button></td></tr>`;
+   }).join('');
+ }
+ function updatePatternResult(id,result){
+   const items=readPatternStore(), x=items.find(x=>x.id===id);if(!x)return;
+   x.result=result;
+   if(writePatternStore(items)){renderPatternArchive();runPatternAnalysis(items)}
+ }
+ function deletePatternRecord(id){
+   const items=readPatternStore().filter(x=>x.id!==id);
+   if(writePatternStore(items)){patternPage=1;renderPatternArchive();runPatternAnalysis(items);$('patternMessage').textContent='Partita eliminata dallo storico Pattern.'}
+ }
+
+
+ function getMatchPatternSummary(m, overSignal, game){
+   const markets=[
+     {key:'o05',label:'Over 0.5 HT'},
+     {key:'o15',label:'Over 1.5 HT'},
+     {key:'home',label:'Over 0.5 HT casa'},
+     {key:'away',label:'Over 0.5 HT ospite'}
+   ];
+   if(!m||!m.ok)return '<div class="pred-patterns"><div class="pred-patterns-title">Win storico dei pattern</div><div class="pattern-no-data">Total/quote non disponibili: percentuali non calcolabili</div></div>';
+   const store=readPatternStore().filter(x=>x.marketAvailable&&Number.isFinite(x.openLine)&&Number.isFinite(x.currentLine)&&Number.isFinite(x.openOdds)&&Number.isFinite(x.currentOdds));
+   const band=v=>(Math.round(Number(v)*10)/10).toFixed(1);
+   const rows=store.filter(x=>Number(x.openLine)===Number(m.openLine)&&Number(x.currentLine)===Number(m.currentLine)&&band(x.openOdds)===band(m.openOdds)&&band(x.currentOdds)===band(m.currentOdds));
+   const outcome=(x,key)=>{
+     if(x.marketResults&&Object.prototype.hasOwnProperty.call(x.marketResults,key)&&x.marketResults[key])return x.marketResults[key];
+     if(key==='o05'&&(x.result==='W'||x.result==='L'))return x.result;
+     if(x.htHome===null||x.htHome===undefined||x.htAway===null||x.htAway===undefined)return '';
+     const h=Number(x.htHome),a=Number(x.htAway);
+     return key==='o05'?(h+a>=1?'W':'L'):key==='o15'?(h+a>=2?'W':'L'):key==='home'?(h>=1?'W':'L'):(a>=1?'W':'L');
+   };
+   const cards=markets.map(market=>{
+     const settled=rows.filter(x=>outcome(x,market.key)==='W'||outcome(x,market.key)==='L');
+     const wins=settled.filter(x=>outcome(x,market.key)==='W').length;
+     if(settled.length<3){
+       const reason=rows.length===0?'Nessuna corrispondenza':`${settled.length} esiti validi`;
+       return `<div class="pred-pattern-item"><div class="market">${market.label}</div><div class="pct none">% non disponibile</div><div class="sample">${reason}; servono almeno 3 esiti</div></div>`;
+     }
+     const pct=wins/settled.length*100, cls=pct<50?' low':'';
+     return `<div class="pred-pattern-item"><div class="market">${market.label}</div><div class="pct${cls}">${pct.toFixed(1)}%</div><div class="sample">${wins} W / ${settled.length-wins} L · n=${settled.length}</div></div>`;
+   }).join('');
+   const lineDelta=+(Number(m.currentLine)-Number(m.openLine)).toFixed(2);
+   const oddsDelta=+(Number(m.currentOdds)-Number(m.openOdds)).toFixed(2);
+   const lineArrow=lineDelta>0?'↑':lineDelta<0?'↓':'→';
+   const oddsArrow=oddsDelta>0?'↑':oddsDelta<0?'↓':'→';
+   const lineNote=lineDelta>0?`Linea salita di +${lineDelta.toFixed(2)}`:lineDelta<0?`Linea scesa di ${lineDelta.toFixed(2)}`:'Linea invariata';
+   const oddsNote=oddsDelta>0?`Quota aumentata di +${oddsDelta.toFixed(2)}`:oddsDelta<0?`Quota diminuita di ${oddsDelta.toFixed(2)}`:'Quota invariata';
+   const oddsMoveClass=oddsDelta>0?'quota-move-up':oddsDelta<0?'quota-move-down':'quota-move-flat';
+   const meta=`<div class="pred-market-meta"><div class="pred-meta-card"><span class="meta-label">Total HT · linea gol</span><div class="meta-values">${Number(m.openLine).toFixed(2)} → ${Number(m.currentLine).toFixed(2)} ${lineArrow}</div><div class="meta-note">${lineNote}</div></div><div class="pred-meta-card"><span class="meta-label">Quota Over HT</span><div class="meta-values">${Number(m.openOdds).toFixed(2)} → <span class="${oddsMoveClass}">${Number(m.currentOdds).toFixed(2)} ${oddsArrow}</span></div><div class="meta-note">${oddsNote}${Number(m.currentOdds)<1.86?' · quota attuale sotto 1.86':''}</div></div></div>`;
+   const signalBox=overSignal?`<div class="pred-signal-inline"><div class="pred-patterns-title">Segnale operativo · Over 0.5 HT</div><span class="tag ${esc(overSignal.cls)}">${esc(overSignal.name)}</span><div class="small">${esc(overSignal.detail)}</div><div class="pred-explain">Il segnale descrive il movimento della linea Total e della quota: non è una percentuale di probabilità.</div></div>`:'';
+    return `<div class="pred-patterns"><div class="pred-patterns-title">Pronostico partita · mercati HT</div>${meta}${signalBox}<div class="actions" style="margin:7px 0"><button type="button" class="tt-btn added" data-trader-add="${esc(makeKey(game||{}))}">＋ Aggiungi a Tabella Trader</button></div><div class="pred-patterns-title">Percentuali storiche · 4 mercati</div><div class="pred-pattern-grid">${cards}</div><div class="pred-pattern-foot">Le percentuali sono basate sugli esiti storici abbinati a questa configurazione, non sono probabilità garantite. W/L e n mostrano risultati e dimensione del campione. I mercati squadra richiedono un punteggio HT valido.</div></div>`;
+ }
+ function getHistoricalMarketRate(m, key){
+   if(!m||!m.ok)return {pct:null,n:0};
+   const store=readPatternStore().filter(x=>x.marketAvailable&&Number.isFinite(Number(x.openLine))&&Number.isFinite(Number(x.currentLine))&&Number.isFinite(Number(x.openOdds))&&Number.isFinite(Number(x.currentOdds)));
+   const band=v=>(Math.round(Number(v)*10)/10).toFixed(1);
+   const rows=store.filter(x=>Number(x.openLine)===Number(m.openLine)&&Number(x.currentLine)===Number(m.currentLine)&&band(x.openOdds)===band(m.openOdds)&&band(x.currentOdds)===band(m.currentOdds));
+   const outcome=x=>{
+     if(x.marketResults&&x.marketResults[key])return x.marketResults[key];
+     if(key==='o05'&&(x.result==='W'||x.result==='L'))return x.result;
+     if(x.htHome===null||x.htHome===undefined||x.htAway===null||x.htAway===undefined)return '';
+     const h=Number(x.htHome),a=Number(x.htAway);
+     return key==='o05'?(h+a>=1?'W':'L'):key==='o15'?(h+a>=2?'W':'L'):key==='home'?(h>=1?'W':'L'):(a>=1?'W':'L');
+   };
+   const settled=rows.filter(x=>outcome(x)==='W'||outcome(x)==='L');
+   if(settled.length<3)return {pct:null,n:settled.length};
+   return {pct:settled.filter(x=>outcome(x)==='W').length/settled.length*100,n:settled.length};
+ }
+ function isGreenCandidate(g){
+   if(!g.metrics||!g.metrics.ok)return false;
+   const s=signal(g.metrics,.5);
+   const h=getHistoricalMarketRate(g.metrics,'o05');
+   // Criterio iniziale permissivo: verde se Over 0.5 HT è positivo/forte
+   // OPPURE se lo storico comparabile Over 0.5 HT è almeno all'80%.
+   const positiveSignal = s.cls === 'good';
+   const historical80 = h.pct !== null && h.pct >= 80;
+   return positiveSignal || historical80;
+ }
+ function render(){
+   const raw=$('raw').value;
+   const parsed=parse(raw);
+   const games=parsed.games;
+   const extracted=games.map(g=>({...g,metrics:getTotalCandidate(g)}));
+   latestMatches=extracted; window.__goalEdgeLatestMatches=latestMatches; window.__goalEdgeSignal=signal;
+   currentPatternBatch=extracted.map(g=>({...g,metrics:g.metrics||getTotalCandidate(g)})).map(makePatternRecord).filter(Boolean);
+   $('savePatterns').disabled=currentPatternBatch.length===0;
+   const known=extracted.filter(g=>g.metrics.ok).length;
+   $('count').textContent=String(games.length);
+   $('known').textContent=String(known);
+   $('missing').textContent=String(games.length-known);
+   if(!raw.trim()){
+     $('message').textContent='Incolla il testo completo copiato da AsianOdds e premi Analizza match.';
+     $('rows').innerHTML='<tr><td colspan="2" class="small">Nessun dato inserito.</td></tr>'; 
+     $('diag').textContent='Testo vuoto.';
+     $('copy').disabled=true;$('savePatterns').disabled=true;currentPatternBatch=[];return;
+   }
+   if(!games.length){
+     $('message').textContent='Non ho riconosciuto nessuna partita: il formato incollato non corrisponde ai blocchi data/orario/squadre attesi.';
+     $('rows').innerHTML='<tr><td colspan="2">Nessuna partita riconosciuta. Apri “Copia diagnostica” e controlla il testo incollato.</td></tr>'; 
+     $('diag').textContent=`Righe lette: ${parsed.lines.length}\nDate trovate: ${parsed.lines.filter(isDate).length}\nPrime 80 righe:\n${parsed.lines.slice(0,80).join('\n')}`;
+     $('copy').disabled=true;$('savePatterns').disabled=true;currentPatternBatch=[];return;
+   }
+   const visibleMatches=greenOnly?extracted.filter(isGreenCandidate):extracted;
+   $('filterGreen').disabled=extracted.length===0;
+   $('showAllMatches').hidden=!greenOnly;
+   $('filterInfo').textContent=greenOnly?`Filtro attivo: ${visibleMatches.length} match verdi su ${extracted.length}. Criterio: segnale Over 0.5 HT positivo/forte oppure storico Over 0.5 HT ≥80% (se disponibile).`:`Visualizzati ${extracted.length} match. Il filtro verde include i match con segnale Over 0.5 HT positivo/forte oppure storico Over 0.5 HT ≥80% (se disponibile).`;
+   $('rows').innerHTML=visibleMatches.map(g=>{
+     const m=g.metrics;
+     const green=isGreenCandidate(g);
+     const greenBadge=green?'<span class="tag good" style="margin-left:6px">✓ DA GIOCARE</span>':'';
+     const match=`<b>${esc(g.home)} – ${esc(g.away)}</b>${greenBadge}<button class="add-match" title="Aggiungi all’archivio" aria-label="Aggiungi ${esc(g.home)} contro ${esc(g.away)} all’archivio" data-add="${esc(makeKey(g))}">+</button><div class="league">${esc(g.league||'Campionato non identificato')} · ${esc(g.date)} ${esc(g.time)}</div>${predictionsMode?`<div class="match-pattern-below">${getMatchPatternSummary(g.metrics, g.metrics&&g.metrics.ok?signal(g.metrics,.5):null, g)}</div>`:''}`;
+     if(!m.ok)return `<tr><td>${match}</td><td><span class="tag mid">NON LETTO</span> ${esc(m.why)}</td></tr>`;
+     if(!predictionsMode)return `<tr><td>${match}</td><td>${m.openLine.toFixed(2)} → ${m.currentLine.toFixed(2)}<div class="small">La quota Open → Current sarà mostrata nel box Pronostico partita.</div></td></tr>`;
+     return `<tr><td>${match}</td><td>${m.openLine.toFixed(2)} → ${m.currentLine.toFixed(2)}<div class="small">Total HT · quota Over e segnale sono nel box Pronostico partita.</div></td></tr>`;
+   }).join('');
+   $('message').textContent=`Partite: ${games.length}. Total e quote estratti: ${known}. I giudizi applicano soglie operative sul movimento Total e sulla quota: non sono probabilità statistiche validate. La provenienza HT della tabella incollata deve essere verificata.`;
+   const dateStrings=parsed.lines.filter(isDate).length;
+   const dateStarts=parsed.lines.filter((line,i)=>isDate(line)&&parsed.lines.slice(i+1,i+5).some(isTime)).length;
+   $('diag').textContent=[
+     `RIGHE TOTALI LETTE: ${parsed.lines.length}`,
+     `DATE PRESENTI NEL TESTO (incluse date storiche): ${dateStrings}`,
+     `DATE DI AVVIO PARTITA (data seguita da orario): ${dateStarts}`,
+     `PARTITE RICONOSCIUTE: ${games.length}`,
+     '',
+     ...games.map((g,i)=>{const m=getTotalCandidate(g);return `${i+1}) ${g.date} ${g.time} | ${g.home} vs ${g.away}\n   Campionato: ${g.league||'non identificato'}\n   Righe mercato: ${g.marketLines.join(' | ')||'non trovate'}\n   Total: ${m.ok?`${m.openLine} @ ${m.openOdds} -> ${m.currentLine} @ ${m.currentOdds}`:'non estratta'}\n   Esito analisi: ${m.why}`;})
+   ].join('\n');
+   $('copy').disabled=false;
+ }
+ $('analyze').addEventListener('click',()=>{predictionsMode=false;greenOnly=false;$('analyzePredictions').disabled=true;render();});
+ $('filterGreen').addEventListener('click',()=>{greenOnly=true;render();});
+ $('showAllMatches').addEventListener('click',()=>{greenOnly=false;render();});
+ $('analyzePredictions').addEventListener('click',()=>{if(!latestMatches.length)return;predictionsMode=true;render();});
+ $('rows').addEventListener('click',e=>{const b=e.target.closest('[data-add]');if(b)archiveMatch(b.dataset.add)});
+ $('archiveRows').addEventListener('click',e=>{const b=e.target.closest('[data-delete]');if(b)deleteArchiveMatch(b.dataset.delete)});
+ $('archiveRows').addEventListener('change',e=>{const s=e.target.closest('[data-result]');if(!s)return;const items=readArchive();const item=items.find(x=>x.id===s.dataset.result);if(item){if(s.value)item.result=s.value;else delete item.result;if(writeArchive(items))renderArchive();}});
+ $('toggleArchive').addEventListener('click',()=>{const p=$('archivePanel');p.hidden=!p.hidden;if(!p.hidden){renderArchive();p.scrollIntoView({behavior:'smooth',block:'start'})}});
+ $('closeArchive').addEventListener('click',()=>$('archivePanel').hidden=true);
+ $('togglePatterns').addEventListener('click',()=>{const p=$('patternPanel');p.hidden=!p.hidden;if(!p.hidden){renderPatternArchive();runPatternAnalysis(readPatternStore());p.scrollIntoView({behavior:'smooth',block:'start'})}});
+ $('closePatterns').addEventListener('click',()=>$('patternPanel').hidden=true);
+ $('savePatterns').addEventListener('click',savePatternBatch);
+ $('patternArchiveRows').addEventListener('change',e=>{const s=e.target.closest('[data-pattern-result]');if(s)updatePatternResult(s.dataset.patternResult,s.value)});
+ $('patternMarket').addEventListener('change',()=>runPatternAnalysis(readPatternStore()));
+ $('patternArchiveRows').addEventListener('click',e=>{const b=e.target.closest('[data-pattern-delete]');if(b)deletePatternRecord(b.dataset.patternDelete)});
+ $('archiveSearch').addEventListener('input',()=>{archivePage=1;renderArchive()}); $('archiveResultFilter').addEventListener('change',()=>{archivePage=1;renderArchive()}); $('archivePageSize').addEventListener('change',()=>{archivePage=1;renderArchive()});
+ $('archivePrev').addEventListener('click',()=>{archivePage=Math.max(1,archivePage-1);renderArchive()}); $('archiveNext').addEventListener('click',()=>{archivePage++;renderArchive()});
+ $('patternSearch').addEventListener('input',()=>{patternPage=1;renderPatternArchive()}); $('patternResultFilter').addEventListener('change',()=>{patternPage=1;renderPatternArchive()}); $('patternPageSize').addEventListener('change',()=>{patternPage=1;renderPatternArchive()});
+ $('patternPrev').addEventListener('click',()=>{patternPage=Math.max(1,patternPage-1);renderPatternArchive()}); $('patternNext').addEventListener('click',()=>{patternPage++;renderPatternArchive()});
+ renderArchive();
+ renderPatternArchive();
+ runPatternAnalysis(readPatternStore());
+ $('clear').addEventListener('click',()=>{$('raw').value='';latestMatches=[];currentPatternBatch=[];predictionsMode=false;greenOnly=false;$('savePatterns').disabled=true;$('analyzePredictions').disabled=true;$('count').textContent='0';$('known').textContent='0';$('missing').textContent='0';$('rows').innerHTML='<tr><td colspan="3" class="small">Incolla i dati e premi “Analizza match”.</td></tr>';$('diag').textContent='In attesa dei dati.';$('message').textContent='Incolla il testo completo copiato da AsianOdds.';$('copy').disabled=true;});
+ $('copy').addEventListener('click',async()=>{const txt=[...$('rows').querySelectorAll('tr')].map(r=>[...r.querySelectorAll('td')].map(c=>c.innerText).join('\t')).join('\n');try{await navigator.clipboard.writeText(txt);$('message').textContent='Risultati copiati.'}catch(e){$('message').textContent='Copia non disponibile: seleziona la tabella e copiala.'}});
+ $('copyDiag').addEventListener('click',async()=>{const txt=$('diag').textContent;try{await navigator.clipboard.writeText(txt);$('message').textContent='Diagnostica copiata.'}catch(e){const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();try{document.execCommand('copy')}catch(_){}ta.remove();$('message').textContent='Se necessario, seleziona manualmente la diagnostica.'}});
+})();
+</script>
+<script>
+(function(){
+'use strict';
+const KEY='goaledge_trader_table_v1';
+const PICKS_KEY='goaledge_trader_picks_v1';
+let picks=[];
+function loadPicks(){try{const x=JSON.parse(localStorage.getItem(PICKS_KEY)||'[]');picks=Array.isArray(x)?x:[]}catch(e){picks=[]}}
+function savePicks(){try{localStorage.setItem(PICKS_KEY,JSON.stringify(picks))}catch(e){alert('Impossibile salvare i pronostici nel browser.')}}
+function renderPicks(){const el=$('ttPicksRows');if(!el)return;el.innerHTML=picks.length?picks.map(p=>`<tr><td>${esc(p.date||'—')}<div class="tt-note">${esc(p.time||'')}</div></td><td><strong>${esc(p.home)} – ${esc(p.away)}</strong><div class="tt-note">${esc(p.league||'')}</div></td><td>${esc(p.market)}<div class="tt-note">${esc(p.signal||'')}</div></td><td>${esc(p.openLine)} → ${esc(p.currentLine)}</td><td>${esc(p.openOdds)} → ${esc(p.currentOdds)}</td><td><select data-pick-result="${esc(p.id)}"><option value="" ${!p.result?'selected':''}>Da verificare</option><option value="W" ${p.result==='W'?'selected':''}>Win</option><option value="L" ${p.result==='L'?'selected':''}>Lose</option></select></td><td><button class="tt-btn danger" data-pick-delete="${esc(p.id)}">Elimina</button></td></tr>`).join(''):'<tr><td colspan="7">Nessun pronostico aggiunto.</td></tr>';}
+function addPickFromMatch(key){const g=window.__goalEdgeLatestMatches?.find(x=>[x.date,x.time,x.home,x.away].join('|').toLocaleLowerCase()===key);if(!g||!g.metrics||!g.metrics.ok){alert('Dati del match non disponibili.');return}const m=g.metrics;const id=[g.date,g.time,g.home,g.away].join('|').toLocaleLowerCase();if(picks.some(p=>p.id===id)){alert('Questa partita è già nella Tabella Trader.');return}const s=window.__goalEdgeSignal?window.__goalEdgeSignal(m,.5):null;picks.unshift({id,date:g.date,time:g.time,home:g.home,away:g.away,league:g.league||'',market:'Over 0.5 HT',signal:s?.name||'Analizzato',openLine:m.openLine.toFixed(2),currentLine:m.currentLine.toFixed(2),openOdds:m.openOdds.toFixed(2),currentOdds:m.currentOdds.toFixed(2),result:''});savePicks();renderPicks();$('traderTableModule').hidden=false;$('traderTableModule').scrollIntoView({behavior:'smooth',block:'start'});}
+const $=id=>document.getElementById(id);
+const today=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
+const money=n=>new Intl.NumberFormat('it-IT',{style:'currency',currency:'EUR'}).format(Number(n)||0);
+const pct=n=>`${(Number(n)||0).toLocaleString('it-IT',{minimumFractionDigits:2,maximumFractionDigits:2})}%`;
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const dateAdd=(date,days)=>{const d=new Date(date+'T12:00:00');d.setDate(d.getDate()+days);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
+let data={initial:200,target:5,stake:5,start:today(),profits:{},notes:{},moves:[]};
+function load(){try{const x=JSON.parse(localStorage.getItem(KEY)||'null');if(x&&typeof x==='object')data={...data,...x,profits:x.profits||{},notes:x.notes||{},moves:Array.isArray(x.moves)?x.moves:[]}}catch(e){}}
+function save(){data.initial=Math.max(0,Number($('ttInitialBank').value)||0);data.target=Number($('ttTarget').value)||5;data.stake=Number($('ttStake').value)||5;data.start=$('ttStartDate').value||today();try{localStorage.setItem(KEY,JSON.stringify(data))}catch(e){alert('Impossibile salvare nel browser. Esporta un backup JSON.')}render()}
+function moveSumBefore(date){return data.moves.reduce((n,m)=>n+(m.date<=date?(m.type==='deposit'?1:-1)*Number(m.amount):0),0)}
+function rows(){let bal=data.initial;const arr=[];for(let i=0;i<31;i++){const date=dateAdd(data.start,i);const start=bal;const mov=data.moves.filter(m=>m.date===date).reduce((n,m)=>n+(m.type==='deposit'?1:-1)*Number(m.amount),0);const profit=Number(data.profits[date]??'');const has=Object.prototype.hasOwnProperty.call(data.profits,date)&&data.profits[date]!==''&&Number.isFinite(profit);const target=start*data.target/100;const stake=start*data.stake/100;bal=start+(has?profit:0)+mov;arr.push({date,start,target,stake,profit:has?profit:null,mov,end:bal,has,goal:has?(profit>=target?'Raggiunto':profit<0?'In perdita':'Non raggiunto'):'Da inserire'});}return arr}
+function render(){
+ const r=rows(),last=r[r.length-1],net=last.end-data.initial,stakeNow=Math.max(0,last.end*data.stake/100);
+ $('ttBalance').textContent=money(last.end);$('ttNet').textContent=money(net);$('ttNet').className=net<0?'tt-negative':'tt-positive';$('ttYield').textContent=pct(data.initial?net/data.initial*100:0);$('ttStakeValue').textContent=money(stakeNow);
+ $('ttSessions').innerHTML=r.map(x=>`<tr><td><strong>${esc(x.date)}</strong></td><td>${money(x.start)}</td><td>${money(x.target)}</td><td>${money(x.stake)}</td><td><input aria-label="Profitto perdita ${esc(x.date)}" type="number" step="0.01" data-profit-date="${esc(x.date)}" value="${x.has?x.profit:''}" placeholder="P/L netto"></td><td class="${x.goal==='Raggiunto'?'tt-positive':x.goal==='In perdita'?'tt-negative':''}">${x.goal==='Raggiunto'?'TARGET RAGGIUNTO':x.goal==='In perdita'?'GIORNATA NEGATIVA':x.goal==='Non raggiunto'?'Target non raggiunto':'—'}</td><td>${money(x.end)}</td></tr>`).join('');
+ $('ttMoves').innerHTML=data.moves.slice().sort((a,b)=>b.date.localeCompare(a.date)).map(m=>`<tr><td>${esc(m.date)}</td><td>${m.type==='deposit'?'Deposito':'Prelievo'}</td><td>${money(m.amount)}</td><td>${esc(m.method||'—')}</td><td><button class="tt-btn danger" data-del-move="${esc(m.id)}">Elimina</button></td></tr>`).join('')||'<tr><td colspan="5">Nessun movimento registrato.</td></tr>';
+ const dated=r.filter(x=>x.has);$('ttDays').textContent=dated.length;$('ttTargetsHit').textContent=dated.filter(x=>x.profit>=x.target).length;
+ const sorted=dated.slice().sort((a,b)=>a.profit-b.profit);$('ttWorst').textContent=sorted.length?`${money(sorted[0].profit)} · ${sorted[0].date}`:'—';$('ttBest').textContent=sorted.length?`${money(sorted[sorted.length-1].profit)} · ${sorted[sorted.length-1].date}`:'—';
+ const notes=Object.entries(data.notes).sort((a,b)=>b[0].localeCompare(a[0]));$('ttJournalText').value=data.notes[$('ttJournalDate').value]||'';
+ drawChart(r);
+}
+function drawChart(r){const svg=$('ttChart'),W=900,H=230,pad=35;let balance=data.initial;const actual=[balance],target=[balance];r.forEach(x=>{balance=x.end;actual.push(balance);target.push(target[target.length-1]*(1+data.target/100))});const vals=actual.concat(target);let min=Math.min(...vals),max=Math.max(...vals);if(min===max){min-=1;max+=1}const x=i=>pad+i*(W-2*pad)/(actual.length-1),y=v=>H-pad-(v-min)*(H-2*pad)/(max-min);const line=a=>a.map((v,i)=>`${i?'L':'M'}${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(' ');let grid='';for(let i=0;i<5;i++){const yy=pad+i*(H-2*pad)/4,val=max-i*(max-min)/4;grid+=`<line x1="${pad}" y1="${yy}" x2="${W-pad}" y2="${yy}" stroke="#e7ece8"/><text x="5" y="${yy+4}" font-size="10" fill="#66736a">${Math.round(val)}</text>`}svg.innerHTML=`${grid}<path d="${line(target)}" fill="none" stroke="#c79a37" stroke-width="2" stroke-dasharray="5 4"/><path d="${line(actual)}" fill="none" stroke="#347650" stroke-width="2.5"/> <text x="${pad}" y="18" font-size="11" fill="#347650">Cassa effettiva</text><text x="${pad+125}" y="18" font-size="11" fill="#a47a1d">Percorso teorico target composto</text><text x="${W-pad-70}" y="${H-8}" font-size="10" fill="#66736a">Giorni 0–31</text>`}
+function download(name,content,type){const b=new Blob([content],{type}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000)}
+function bind(){
+ document.getElementById('toggleTrader')?.addEventListener('click',()=>{const p=$('traderTableModule');p.hidden=!p.hidden;if(!p.hidden){renderPicks();p.scrollIntoView({behavior:'smooth',block:'start'})}});
+ $('ttCloseModule')?.addEventListener('click',()=>{$('traderTableModule').hidden=true;document.getElementById('toggleTrader')?.scrollIntoView({behavior:'smooth',block:'nearest'})});
+ $('ttPicksRows')?.addEventListener('change',e=>{const el=e.target.closest('[data-pick-result]');if(!el)return;const p=picks.find(x=>x.id===el.dataset.pickResult);if(p){p.result=el.value;savePicks();renderPicks()}});
+ $('ttPicksRows')?.addEventListener('click',e=>{const b=e.target.closest('[data-pick-delete]');if(!b)return;picks=picks.filter(x=>x.id!==b.dataset.pickDelete);savePicks();renderPicks()});
+ $('rows')?.addEventListener('click',e=>{const b=e.target.closest('[data-trader-add]');if(b)addPickFromMatch(b.dataset.traderAdd)});
+ ['ttInitialBank','ttTarget','ttStake','ttStartDate'].forEach(id=>$(id).addEventListener('change',save));$('ttSessions').addEventListener('change',e=>{const el=e.target;if(!el.matches('[data-profit-date]'))return;const d=el.dataset.profitDate;if(el.value==='')delete data.profits[d];else data.profits[d]=Number(el.value);try{localStorage.setItem(KEY,JSON.stringify(data))}catch(e){}render()});
+$('ttJournalDate').addEventListener('change',()=>{$('ttJournalText').value=data.notes[$('ttJournalDate').value]||''});$('ttSaveNote').addEventListener('click',()=>{const d=$('ttJournalDate').value||today(),v=$('ttJournalText').value.trim();if(v)data.notes[d]=v;else delete data.notes[d];localStorage.setItem(KEY,JSON.stringify(data));render();alert('Nota salvata.')});
+$('ttAddMove').addEventListener('click',()=>{const amount=Number($('ttMoveAmount').value);if(!Number.isFinite(amount)||amount<=0){alert('Inserisci un importo valido maggiore di zero.');return}data.moves.push({id:String(Date.now())+Math.random().toString(36).slice(2,6),date:$('ttMoveDate').value||today(),type:$('ttMoveType').value,amount,method:$('ttMoveMethod').value.trim()});localStorage.setItem(KEY,JSON.stringify(data));$('ttMoveAmount').value='';$('ttMoveMethod').value='';render()});
+$('ttMoves').addEventListener('click',e=>{const b=e.target.closest('[data-del-move]');if(!b)return;data.moves=data.moves.filter(m=>m.id!==b.dataset.delMove);localStorage.setItem(KEY,JSON.stringify(data));render()});
+$('ttExport').addEventListener('click',()=>download('GoalEdge_TabTrader_backup.json',JSON.stringify(data,null,2),'application/json'));
+$('ttImport').addEventListener('click',()=>$('ttImportFile').click());$('ttImportFile').addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;try{const x=JSON.parse(await f.text());if(!x||typeof x!=='object'||!x.profits||!x.moves)throw Error('Formato non valido');data={...data,...x};localStorage.setItem(KEY,JSON.stringify(data));init();alert('Backup importato.')}catch(err){alert('File JSON non valido o incompatibile.')}e.target.value=''});
+$('ttCsv').addEventListener('click',()=>{const r=rows(),csv=[['Data','Cassa iniziale','Target teorico','Stake indicativo','Profitto perdita','Esito target','Cassa finale'],...r.map(x=>[x.date,x.start.toFixed(2),x.target.toFixed(2),x.stake.toFixed(2),x.profit==null?'':x.profit.toFixed(2),x.goal,x.end.toFixed(2)])].map(row=>row.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(';')).join('\r\n');download('GoalEdge_TabTrader_sessioni.csv','\ufeff'+csv,'text/csv;charset=utf-8')});
+$('ttReset').addEventListener('click',()=>{if(!confirm('Azzerare tutti i dati della Tabella Trader? Esporta prima un backup se vuoi conservarli.'))return;data={initial:200,target:5,stake:5,start:today(),profits:{},notes:{},moves:[]};localStorage.removeItem(KEY);init()});
+}
+function init(){ $('ttInitialBank').value=data.initial;$('ttTarget').value=String(data.target);$('ttStake').value=String(data.stake);$('ttStartDate').value=data.start;$('ttJournalDate').value=today();$('ttMoveDate').value=today();render()}
+load();loadPicks();bind();init();renderPicks();
+})();
+</script>
+</body>
+</html>
