@@ -118,11 +118,33 @@ table{border-collapse:collapse;width:100%;font-size:14px}th,td{text-align:left;p
 @media(max-width:650px){#traderTableModule .tt-grid,#traderTableModule .tt-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}#traderTableModule .tt-body{padding:10px}#traderTableModule .tt-kpi strong{font-size:16px}#traderTableModule .tt-journal{grid-template-columns:1fr}}
 
 
+
+/* Guida rapida integrata */
+.guide-btn{background:#28784a!important;color:#fff!important;border:1px solid #1e633b!important}
+ .admin-diagnostics{display:none!important}
+.guide-overlay[hidden]{display:none!important}
+.guide-overlay{position:fixed;inset:0;z-index:9999;background:#17231dcc;display:flex;align-items:flex-start;justify-content:center;padding:16px;overflow:auto}
+.guide-dialog{width:min(900px,100%);margin:auto;background:#fff;border-radius:16px;box-shadow:0 20px 70px #0004;overflow:hidden;color:#202821}
+.guide-head{position:sticky;top:0;background:#fff;border-bottom:1px solid #dce3dc;padding:16px;display:flex;align-items:center;justify-content:space-between;gap:12px;z-index:1}
+.guide-head h2{margin:0;font-size:21px}.guide-content{padding:16px;max-height:none}.guide-content h3{font-size:16px;margin:20px 0 7px;color:#28784a}.guide-content p,.guide-content li{color:#354139;line-height:1.55}.guide-content li{margin:6px 0}.guide-content ol,.guide-content ul{padding-left:22px}.guide-callout{background:#e4f2e8;border-left:4px solid #28784a;padding:11px 13px;border-radius:8px;margin:12px 0}.guide-warn{background:#fff3d8;border-left:4px solid #c28a22;padding:11px 13px;border-radius:8px;margin:12px 0}.guide-close{background:#e9eee9!important;color:#202821!important;border:1px solid #dce3dc!important;white-space:nowrap}
+@media(max-width:600px){.guide-overlay{padding:7px}.guide-head{padding:12px}.guide-content{padding:12px}.guide-head h2{font-size:18px}}
+
 </style>
 </head>
 <body>
 <main>
- <div class="top"><div><div class="kicker">Goal Edge · v39 · Filtro match verdi</div><h1>AsianOdds HT</h1><p>Mercati HT · Over 0.5 · Over 1.5 · Gol casa · Gol ospite</p></div><div class="top-actions"><a class="asianodds-btn" href="https://asianodds.com/en/past-games" target="_blank" rel="noopener noreferrer">↗ AsianOdds · Past Games</a><button id="toggleTrader" class="secondary">Tabella Trader</button><button id="togglePatterns" class="pattern-btn">Pattern</button><button id="toggleArchive" class="archive-btn">Archivio <span id="archiveCount">0</span></button><span class="pill">4 mercati HT · Pattern verificabili</span></div></div>
+<section class="panel" id="dataBackupPanel">
+  <div class="top"><h2>Backup Archivio e Pattern</h2><span class="pill">Protezione dati</span></div>
+  <p class="small">Esporta una copia dei dati salvati su questo dispositivo. Per recuperare i 44 match, seleziona il JSON dell’Archivio che hai scaricato.</p>
+  <div class="actions">
+    <button type="button" id="exportAllData" class="secondary">Esporta backup Archivio + Pattern</button>
+    <button type="button" id="importAllData" class="secondary">Importa JSON / Ripristina</button>
+    <input type="file" id="dataBackupFile" accept=".json,application/json" hidden>
+  </div>
+  <p id="dataBackupMessage" class="small" aria-live="polite">L’importazione unisce i match senza duplicare quelli con lo stesso ID. Un file che contiene solo l’Archivio non può ricreare dati Pattern non inclusi nel file.</p>
+</section>
+
+ <div class="top"><div><div class="kicker">Goal Edge · v39 · Filtro match verdi</div><h1>AsianOdds HT</h1><p>Mercati HT · Over 0.5 · Over 1.5 · Gol casa · Gol ospite</p></div><div class="top-actions"><a class="asianodds-btn" href="https://asianodds.com/en/past-games" target="_blank" rel="noopener noreferrer">↗ AsianOdds · Past Games</a><button id="openGuide" class="guide-btn" type="button">Guida</button><button id="toggleTrader" class="secondary">Tabella Trader</button><button id="togglePatterns" class="pattern-btn">Pattern</button><button id="toggleArchive" class="archive-btn">Archivio <span id="archiveCount">0</span></button><span class="pill">4 mercati HT · Pattern verificabili</span></div></div>
 
  <section class="panel">
   <h2>Incolla dati AsianOdds HT</h2>
@@ -193,8 +215,39 @@ table{border-collapse:collapse;width:100%;font-size:14px}th,td{text-align:left;p
  </div><div id="archiveInfo" class="archive-info">0 partite</div>
  <div class="table-wrap"><table><thead><tr><th>Partita</th><th>Open → Current Total</th><th>Quota Over Total HT Open → Current</th><th>Over 0.5 HT</th><th>Over 1.5 HT</th><th>Esito W/L</th><th>Azioni</th></tr></thead><tbody id="archiveRows"><tr><td colspan="7" class="small">Archivio vuoto.</td></tr></tbody></table></div>
  <div class="pagination"><button class="secondary" id="archivePrev">← Precedente</button><span id="archivePageLabel">Pagina 1 di 1</span><button class="secondary" id="archiveNext">Successiva →</button></div></section>
- <section class="panel"><h2>Diagnostica</h2><div id="diag" class="diag">In attesa dei dati.</div><div class="actions"><button class="secondary" id="copyDiag">Copia diagnostica</button></div></section>
+ <section class="panel admin-diagnostics" aria-hidden="true"><h2>Diagnostica</h2><div id="diag" class="diag">In attesa dei dati.</div><div class="actions"><button class="secondary" id="copyDiag">Copia diagnostica</button></div></section>
 </main>
+
+<div id="guideOverlay" class="guide-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="guideTitle">
+ <div class="guide-dialog">
+  <div class="guide-head"><div><div class="kicker">GOAL EDGE · MANUALE UTENTE</div><h2 id="guideTitle">Guida semplice all’utilizzo</h2></div><button type="button" class="guide-close" id="closeGuide">Chiudi ✕</button></div>
+  <div class="guide-content">
+   <div class="guide-callout"><strong>Da dove cominciare:</strong> copia lo storico HT da AsianOdds, incollalo nel riquadro principale e premi <strong>Analizza match</strong>. Controlla i dati letti prima di valutare i segnali.</div>
+   <h3>1. A cosa serve Goal Edge</h3>
+   <p>Goal Edge legge i dati che incolli da AsianOdds relativi al primo tempo e mette in evidenza le variazioni della linea <strong>Total</strong> e delle quote. Aiuta a organizzare i dati e confrontarli con lo storico: <strong>non garantisce vincite</strong> e un segnale non è una certezza.</p>
+   <p>I mercati gestiti sono soltanto questi quattro:</p><ul><li><strong>Over 0.5 HT</strong> — almeno un gol nel primo tempo.</li><li><strong>Over 1.5 HT</strong> — almeno due gol nel primo tempo.</li><li><strong>Over 0.5 HT squadra casa</strong> — almeno un gol della squadra di casa nel primo tempo.</li><li><strong>Over 0.5 HT squadra ospite</strong> — almeno un gol della squadra ospite nel primo tempo.</li></ul>
+   <h3>2. Analizzare una partita: passo per passo</h3>
+   <ol><li>Apri <strong>AsianOdds · Past Games</strong> e copia il blocco di dati relativo alle partite HT che vuoi analizzare.</li><li>Torna in Goal Edge e incolla il testo nel grande riquadro.</li><li>Premi <strong>Analizza match</strong>.</li><li>Controlla il riepilogo: partite riconosciute e dati Total/quote letti. Se qualcosa non torna, controlla che il testo copiato da AsianOdds sia completo e leggibile.</li><li>Esamina le righe delle partite e i segnali. Usa <strong>Solo match verdi</strong> per filtrare i match evidenziati; <strong>Mostra tutti</strong> riporta l’elenco completo.</li><li>Premi <strong>Analizza pronostici</strong> per visualizzare il riepilogo dei mercati HT e gli eventuali confronti con i pattern storici disponibili.</li></ol>
+   <h3>3. Come leggere Total, Open e Current</h3>
+   <ul><li><strong>Open</strong>: valore/quota di apertura mostrato nei dati.</li><li><strong>Total</strong>: linea asiatica relativa al totale dei gol attesi nel mercato HT.</li><li><strong>Current</strong>: valore/quota attuale mostrato da AsianOdds.</li><li><strong>Total in aumento</strong>: indica che la linea si è spostata verso un totale più alto; l’aumento di <strong>+0,25</strong> è un movimento da osservare e più incrementi possono rafforzare il segnale.</li><li><strong>Total invariato</strong>: nessun cambiamento di linea rilevato.</li><li><strong>Total in diminuzione</strong>: movimento in direzione opposta all’aumento.</li><li>Le evidenziazioni colorate servono a individuare più rapidamente i movimenti e alcune quote: <strong>non sono una garanzia di esito</strong>.</li></ul>
+   <h3>4. Pulsanti principali</h3>
+   <ul><li><strong>AsianOdds · Past Games</strong>: apre la pagina esterna da cui copiare i dati.</li><li><strong>Guida</strong>: apre questo manuale.</li><li><strong>Tabella Trader</strong>: apre il modulo per tenere traccia di cassa, sessioni, pronostici aggiunti e movimenti.</li><li><strong>Pattern</strong>: apre l’analisi delle configurazioni ricorrenti nello storico.</li><li><strong>Archivio</strong>: apre le partite salvate e permette di annotare l’esito.</li><li><strong>Copia risultati</strong>: copia il riepilogo prodotto, quando disponibile.</li><li><strong>Svuota</strong>: pulisce l’area di lavoro corrente. Prima di usarlo, salva le partite o i dati che vuoi conservare.</li></ul>
+   <h3>5. Pattern: come usarlo</h3>
+   <ol><li>Apri <strong>Pattern</strong>.</li><li>Seleziona il mercato che vuoi studiare dal menu: uno dei quattro mercati HT supportati.</li><li>Incolla lo storico delle partite e premi <strong>Analizza Pattern</strong>.</li><li>Consulta le configurazioni trovate e le statistiche: partite salvate, campione con esito, Win e Lose.</li><li>Usa ricerca, filtro esito e paginazione per trovare una partita o restringere l’elenco.</li><li>Quando conosci il risultato, aggiorna l’esito disponibile così che lo storico possa essere verificato.</li></ol>
+   <div class="guide-warn"><strong>Importante:</strong> una percentuale storica è significativa solo insieme al numero di casi osservati. Un campione piccolo può essere fuorviante; le statistiche passate non predicono con certezza le partite future. Per i mercati squadra è necessario un punteggio HT valido per verificare correttamente l’esito.</div>
+   <h3>6. Archivio: salvare e registrare gli esiti</h3>
+   <ol><li>Accanto alla partita usa il comando di salvataggio disponibile per aggiungerla all’<strong>Archivio</strong>.</li><li>Apri <strong>Archivio</strong> per vedere le partite memorizzate.</li><li>Quando l’esito è noto, seleziona <strong>W (Win)</strong> oppure <strong>L (Lose)</strong>.</li><li>Controlla il totale delle partite, Win, Lose e le percentuali. Le percentuali dipendono dagli esiti che hai registrato.</li><li>Usa ricerca, filtri e pagine per trovare rapidamente le partite.</li></ol>
+   <h3>7. Tabella Trader: gestione e registrazioni</h3>
+   <ol><li>Premi <strong>Tabella Trader</strong> per aprire il modulo.</li><li>Imposta <strong>cassa iniziale</strong>, <strong>target giornaliero</strong>, <strong>stake percentuale</strong> e data iniziale.</li><li>Le partite aggiunte dal riquadro pronostico compaiono nella tabella; aggiorna il loro esito quando lo conosci.</li><li>Nella sezione <strong>Sessioni di trading</strong>, inserisci il profitto o la perdita netta della giornata. Il riepilogo aggiorna cassa e andamento.</li><li>Nel <strong>Diario di bordo</strong>, scrivi e salva note relative alla sessione.</li><li>In <strong>Depositi e prelievi</strong>, registra data, tipo, importo e nota del movimento.</li><li>Usa il grafico e il riepilogo periodo per controllare l’andamento registrato.</li><li>Premi <strong>Esporta dati JSON</strong> per creare una copia di sicurezza; usa <strong>Importa dati JSON</strong> per ripristinarla. <strong>Esporta sessioni CSV</strong> crea un file utilizzabile in un foglio di calcolo.</li><li><strong>Azzera tabella</strong> cancella i dati della Tabella Trader: esporta prima il backup se vuoi conservarli.</li></ol>
+   <h3>8. Dove vengono salvati i dati?</h3>
+   <p>Archivio, Pattern e Tabella Trader salvano i dati nel <strong>browser e dispositivo in uso</strong>. Non dare per scontato che siano automaticamente condivisi con un altro telefono o computer. Se cambi dispositivo, cancelli i dati del browser o usi la navigazione privata, potresti non ritrovare le registrazioni. Per la Tabella Trader esporta regolarmente il backup JSON.</p>
+   <h3>9. Se qualcosa non funziona</h3>
+   <ol><li>Verifica di aver copiato il blocco completo da AsianOdds, comprese le intestazioni e le quote.</li><li>Incolla il testo senza modificarne colonne o valori.</li><li>Premi <strong>Analizza match</strong> e guarda quanti match sono stati riconosciuti.</li><li>Se il risultato è incompleto, verifica di aver copiato l’intero blocco della partita da AsianOdds.</li><li>Non segnare Win/Lose finché non hai verificato il risultato effettivo.</li></ol>
+   <div class="guide-callout"><strong>Buona pratica:</strong> prima di usare i segnali, verifica la lettura dei dati, registra gli esiti reali e confronta sempre le percentuali con la dimensione del campione. Gestisci la cassa con prudenza.</div>
+  </div>
+ </div>
+</div>
+
 <section id="traderTableModule" hidden>
  <div class="tt-head">
   <div><h2>Tabella Trader · Money Management</h2><p>Gestione cassa, target giornaliero, sessioni, movimenti e diario operativo</p></div>
@@ -652,7 +705,7 @@ table{border-collapse:collapse;width:100%;font-size:14px}th,td{text-align:left;p
    }
    if(!games.length){
      $('message').textContent='Non ho riconosciuto nessuna partita: il formato incollato non corrisponde ai blocchi data/orario/squadre attesi.';
-     $('rows').innerHTML='<tr><td colspan="2">Nessuna partita riconosciuta. Apri “Copia diagnostica” e controlla il testo incollato.</td></tr>'; 
+     $('rows').innerHTML='<tr><td colspan="2">Nessuna partita riconosciuta. verifica che il testo incollato contenga date, orari e nomi delle squadre.</td></tr>'; 
      $('diag').textContent=`Righe lette: ${parsed.lines.length}\nDate trovate: ${parsed.lines.filter(isDate).length}\nPrime 80 righe:\n${parsed.lines.slice(0,80).join('\n')}`;
      $('copy').disabled=true;$('savePatterns').disabled=true;currentPatternBatch=[];return;
    }
@@ -759,6 +812,20 @@ $('ttReset').addEventListener('click',()=>{if(!confirm('Azzerare tutti i dati de
 }
 function init(){ $('ttInitialBank').value=data.initial;$('ttTarget').value=String(data.target);$('ttStake').value=String(data.stake);$('ttStartDate').value=data.start;$('ttJournalDate').value=today();$('ttMoveDate').value=today();render()}
 load();loadPicks();bind();init();renderPicks();
+})();
+</script>
+
+<script>
+(() => {
+ const overlay=document.getElementById('guideOverlay');
+ const open=document.getElementById('openGuide');
+ const close=document.getElementById('closeGuide');
+ if(!overlay||!open||!close)return;
+ const show=()=>{overlay.hidden=false;document.body.style.overflow='hidden';close.focus()};
+ const hide=()=>{overlay.hidden=true;document.body.style.overflow='';open.focus()};
+ open.addEventListener('click',show);close.addEventListener('click',hide);
+ overlay.addEventListener('click',e=>{if(e.target===overlay)hide()});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!overlay.hidden)hide()});
 })();
 </script>
 </body>
