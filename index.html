@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Goal Edge · AsianOdds HT v31</title>
+<title>GoalEdge · v58</title>
 <style>
 :root{--bg:#f4f6f4;--panel:#fff;--ink:#202821;--muted:#667168;--line:#dce3dc;--green:#28784a;--greenbg:#e4f2e8;--amber:#936313;--amberbg:#fff3d8;--red:#9a4740;--redbg:#fbe9e6}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
@@ -184,25 +184,38 @@ tr.prediction-detail-row.prediction-zebra-a>td{background:#fff!important}
 tr.prediction-detail-row.prediction-zebra-b>td{background:#f0f7f2!important}
 tr.prediction-detail-row .pred-patterns{background:transparent!important}
 @media(min-width:701px){.prediction-detail-row .pred-market-meta{grid-template-columns:minmax(0,1fr)!important;max-width:600px}.prediction-detail-row .pred-pattern-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important}}
+
+#gePageTop{position:fixed;right:16px;bottom:22px;z-index:9999;width:46px;height:46px;border-radius:50%;padding:0;background:#315d43;color:#fff;box-shadow:0 3px 12px #0002;font-size:22px;display:flex;align-items:center;justify-content:center}
+@media(max-width:700px){#gePageTop{right:12px;bottom:18px;width:44px;height:44px}}
+
+.backup-toggle{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;text-align:left;background:#edf2ed;color:#26372b;border:1px solid var(--line);padding:12px 14px;font-weight:850}
+#backupPanelContent{padding-top:10px}#backupPanelContent[hidden]{display:none!important}
+#backupPanelArrow{font-size:20px;line-height:1;transition:transform .18s ease}#backupPanelToggle[aria-expanded="true"] #backupPanelArrow{transform:rotate(180deg)}
+.ge-main-header{align-items:center}.ge-brand h1{font-size:clamp(27px,5vw,36px);font-weight:900;letter-spacing:-.04em;margin:0;line-height:1.05}.ge-version{font-size:12px;font-weight:800;color:var(--green);margin-top:4px}.ge-byline{font-size:10px;color:var(--muted);margin-top:2px;letter-spacing:.02em}
 </style>
+<style id="ge-auth-startup-lock">
+  html.ge-auth-startup body { visibility: hidden !important; }
+</style>
+<script>document.documentElement.classList.add('ge-auth-startup');</script>
 </head>
 <body>
+<button id="gePageTop" type="button" aria-label="Torna all’inizio della pagina" title="Torna all’inizio">↑</button>
 <main>
 <section class="panel" id="dataBackupPanel">
-  <div class="top"><h2>Backup Archivio e Pattern</h2><span class="pill">Protezione dati</span></div>
-  <p class="small">Esporta una copia dei dati salvati su questo dispositivo. Per recuperare i 44 match, seleziona il JSON dell’Archivio che hai scaricato.</p>
-  <div class="actions">
-    <button type="button" id="exportAllData" class="secondary" onclick="geExportBackup()">Esporta backup Archivio + Pattern</button>
+  <button type="button" id="backupPanelToggle" class="backup-toggle" aria-expanded="false" aria-controls="backupPanelContent" onclick="geToggleBackupPanel()">
+    <span>Backup Archivio e Pattern</span><span id="backupPanelArrow" aria-hidden="true">⌄</span>
+  </button>
+  <div id="backupPanelContent" hidden>
+    <p class="small">Esporta una copia dei dati salvati su questo dispositivo. Per recuperare i match, seleziona il JSON dell’Archivio che hai scaricato.</p>
+    <div class="actions"><button type="button" id="exportAllData" class="secondary" onclick="geExportBackup()">Esporta backup Archivio + Pattern</button></div>
+    <p class="small"><b>Importa un backup:</b> scegli prima il file JSON qui sotto, poi premi il pulsante di ripristino.</p>
+    <input type="file" id="dataBackupFile" accept=".json,application/json">
+    <div class="actions"><button type="button" id="importAllData" class="secondary" onclick="geImportBackup()">Importa JSON / Ripristina</button></div>
+    <p id="dataBackupMessage" class="small" aria-live="polite">Il ripristino unisce i match senza duplicare gli ID. Un JSON che contiene solo l’Archivio non può ricreare lo storico Pattern non presente nel file.</p>
   </div>
-  <p class="small"><b>Importa un backup:</b> scegli prima il file JSON qui sotto, poi premi il pulsante di ripristino.</p>
-  <input type="file" id="dataBackupFile" accept=".json,application/json">
-  <div class="actions">
-    <button type="button" id="importAllData" class="secondary" onclick="geImportBackup()">Importa JSON / Ripristina</button>
-  </div>
-  <p id="dataBackupMessage" class="small" aria-live="polite">Il ripristino unisce i match senza duplicare gli ID. Un JSON che contiene solo l’Archivio non può ricreare lo storico Pattern non presente nel file.</p>
 </section>
 
- <div class="top"><div><div class="kicker">Goal Edge · v39 · Filtro match verdi</div><h1>AsianOdds HT</h1><p>Mercati HT · Over 0.5 · Over 1.5 · Gol casa · Gol ospite</p></div><div class="top-actions"><a class="asianodds-btn" href="https://asianodds.com/en/past-games" target="_blank" rel="noopener noreferrer">↗ AsianOdds · Past Games</a><button id="openGuide" class="guide-btn" type="button">Guida</button><button id="toggleTrader" class="secondary">Tabella Trader</button><button id="togglePatterns" class="pattern-btn">Pattern</button><button id="toggleArchive" class="archive-btn">Archivio <span id="archiveCount">0</span></button><span class="pill">4 mercati HT · Pattern verificabili</span></div></div>
+ <div class="top ge-main-header"><div class="ge-brand"><h1>GoalEdge</h1><div class="ge-version">Versione v58</div><div class="ge-byline">Software by Guanito</div></div><div class="top-actions"><a class="asianodds-btn" href="https://asianodds.com/en/past-games" target="_blank" rel="noopener noreferrer">↗ AsianOdds · Past Games</a><button id="openGuide" class="guide-btn" type="button">Guida</button><button id="toggleTrader" class="secondary">Tabella Trader</button><button id="togglePatterns" class="pattern-btn">Pattern</button><button id="toggleArchive" class="archive-btn">Archivio <span id="archiveCount">0</span></button></div></div>
 
  <section class="panel">
   <h2>Incolla dati AsianOdds HT</h2>
@@ -228,7 +241,7 @@ tr.prediction-detail-row .pred-patterns{background:transparent!important}
  <section class="panel"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap"><h2 style="margin:0">Risultati</h2><div style="display:flex;gap:8px;flex-wrap:wrap"><button id="filterGreen" class="secondary" type="button">✓ Solo match verdi</button><button id="showAllMatches" class="secondary" type="button" hidden>Mostra tutti</button></div></div><p id="filterInfo" class="small">Dopo “Analizza match”, filtra i match con segnale Over 0.5 HT positivo/forte; lo storico ≥80% viene aggiunto quando disponibile.</p><div class="table-wrap"><table><thead><tr><th>Partita</th><th>Total HT · Open → Current</th></tr></thead><tbody id="rows"><tr><td colspan="2" class="small">Incolla i dati e premi “Analizza match”.</td></tr></tbody></table></div></section>
 
  <section class="panel" id="patternPanel" hidden>
-   <div class="top"><h2>Laboratorio Pattern · Total HT</h2><button class="secondary" id="closePatterns">Chiudi Pattern</button></div>
+   <div class="top"><h2>Laboratorio Pattern · Total HT</h2><div class="archive-actions"><button class="secondary" type="button" data-section-top="patternPanel">↑ Inizio sezione</button><button class="secondary" id="closePatterns">Chiudi Pattern</button></div></div>
    <p class="small">Laboratorio dedicato ai quattro mercati: Over 0.5 HT, Over 1.5 HT, Over 0.5 HT squadra casa e Over 0.5 HT squadra ospite. Le percentuali si basano solo su esiti verificati e sono mostrate separatamente per mercato quando sono disponibili i dati necessari.</p>
    <label for="patternMarket"><b>Mercato per le percentuali pattern</b></label>
    <select id="patternMarket" style="width:100%;margin:6px 0 12px;padding:10px;border:1px solid var(--line);border-radius:9px;background:#fff"><option value="o05">Over 0.5 HT</option><option value="o15">Over 1.5 HT</option><option value="home">Over 0.5 HT squadra casa</option><option value="away">Over 0.5 HT squadra ospite</option></select>
@@ -266,7 +279,7 @@ tr.prediction-detail-row .pred-patterns{background:transparent!important}
   <div class="pagination"><button class="secondary" id="patternPrev">← Precedente</button><span id="patternPageLabel">Pagina 1 di 1</span><button class="secondary" id="patternNext">Successiva →</button></div>
  </section>
 
- <section class="panel" id="archivePanel" hidden><div class="top"><h2>Archivio partite salvate</h2><button class="secondary" id="closeArchive">Chiudi archivio</button></div><p class="small">Le partite restano salvate in questo browser/dispositivo anche dopo aver chiuso la pagina. Per ogni evento seleziona W oppure L quando l’esito è noto.</p><div class="archive-stats" id="archiveStats"><div class="stat"><span>Eventi in archivio</span><b id="statTotal">0</b></div><div class="stat"><span>Win</span><b id="statWin">0</b></div><div class="stat"><span>Lose</span><b id="statLose">0</b></div><div class="stat"><span>Win %</span><b id="statWinPct">—</b></div><div class="stat"><span>Lose %</span><b id="statLosePct">—</b></div></div><div class="archive-toolbar">
+ <section class="panel" id="archivePanel" hidden><div class="top"><h2>Archivio partite salvate</h2><div class="archive-actions"><button class="secondary" type="button" data-section-top="archivePanel">↑ Inizio sezione</button><button class="secondary" id="closeArchive">Chiudi archivio</button></div></div><p class="small">Le partite restano salvate in questo browser/dispositivo anche dopo aver chiuso la pagina. Per ogni evento seleziona W oppure L quando l’esito è noto.</p><div class="archive-stats" id="archiveStats"><div class="stat"><span>Eventi in archivio</span><b id="statTotal">0</b></div><div class="stat"><span>Win</span><b id="statWin">0</b></div><div class="stat"><span>Lose</span><b id="statLose">0</b></div><div class="stat"><span>Win %</span><b id="statWinPct">—</b></div><div class="stat"><span>Lose %</span><b id="statLosePct">—</b></div></div><div class="archive-toolbar">
   <input id="archiveSearch" type="search" placeholder="Cerca squadra, campionato o data…" aria-label="Cerca nell’archivio partite">
   <select id="archiveResultFilter" aria-label="Filtra esito"><option value="all">Tutti gli esiti</option><option value="pending">Da verificare</option><option value="W">Win</option><option value="L">Lose</option></select>
   <select id="archivePageSize" aria-label="Partite per pagina"><option value="25">25 per pagina</option><option value="50">50 per pagina</option><option value="100">100 per pagina</option></select>
@@ -312,6 +325,15 @@ tr.prediction-detail-row .pred-patterns{background:transparent!important}
   <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><span style="font-size:11px;font-weight:800">DATI SALVATI NEL DISPOSITIVO</span><button class="tt-btn" id="ttCloseModule" type="button">Chiudi ×</button></div>
  </div>
  <div class="tt-body">
+  <div class="tt-field" style="margin-bottom:12px;background:#fffdf2;border-color:#eadca8">
+   <label for="ttSavedTables">GESTIONE TABELLE TRADER</label>
+   <div class="tt-actions" style="margin:6px 0 4px">
+    <button class="tt-btn primary" id="ttSaveAs" type="button">💾 Salva con nome</button>
+    <button class="tt-btn" id="ttOpenTable" type="button">📂 Apri tabella</button>
+    <select id="ttSavedTables" aria-label="Tabelle Trader salvate" style="flex:1;min-width:160px"><option value="">Seleziona tabella salvata</option></select>
+   </div>
+   <div class="tt-note" id="ttTableStatus">La tabella attuale viene mantenuta separata dalle altre.</div>
+  </div>
   <div class="tt-section-title">Pronostici aggiunti da Goal Edge</div>
   <p class="tt-note">Le partite aggiunte dal box Pronostico compaiono qui. Puoi aggiornare l'esito quando è noto.</p>
   <div class="tt-table-wrap"><table style="min-width:680px"><thead><tr><th>Data</th><th>Partita</th><th>Mercato / segnale</th><th>Total</th><th>Quota</th><th>Esito</th><th></th></tr></thead><tbody id="ttPicksRows"><tr><td colspan="7">Nessun pronostico aggiunto.</td></tr></tbody></table></div>
@@ -531,7 +553,7 @@ tr.prediction-detail-row .pred-patterns{background:transparent!important}
      const match=`<b>${esc(x.home)} – ${esc(x.away)}</b><div class="league">${esc(x.league)} · ${esc(x.date)} ${esc(x.time)}</div>`;
      const total=`<div class="value-pair"><span class="value-chip value-flat"><span class="value-label">Open</span> ${Number(x.openLine).toFixed(2)}</span><span class="value-chip ${cls}"><span class="value-label">Current</span> ${Number(x.currentLine).toFixed(2)} ${arrow}</span></div><div class="small">${td>0?`<span class="total-step-up">Var.Total: +${td.toFixed(2)}</span>`:`Var.Total: ${td>=0?'+':''}${td.toFixed(2)}`}</div>`;
      const result=x.result||'';
-     return `<tr><td>${match}</td><td>${total}</td><td>${Number(x.openOdds).toFixed(2)} → ${currentOddsText}</td><td>${label(x.o05)}</td><td>${label(x.o15)}</td><td><select class="wl-select ${result==='W'?'win':result==='L'?'lose':''}" data-result="${esc(x.id)}" aria-label="Esito per ${esc(x.home)} contro ${esc(x.away)}"><option value="" ${!result?'selected':''}>Da verificare</option><option value="W" ${result==='W'?'selected':''}>W — Win</option><option value="L" ${result==='L'?'selected':''}>L — Lose</option></select></td><td><button class="delete-match" data-delete="${esc(x.id)}">Elimina</button></td></tr>`;
+     return `<tr class="archive-match-row"><td data-label="Partita">${match}</td><td data-label="Total Open / Current">${total}</td><td data-label="Quota Over Total HT">${Number(x.openOdds).toFixed(2)} → ${currentOddsText}</td><td data-label="Over 0.5 HT">${label(x.o05)}</td><td data-label="Over 1.5 HT">${label(x.o15)}</td><td data-label="Esito W/L"><select class="wl-select ${result==='W'?'win':result==='L'?'lose':''}" data-result="${esc(x.id)}" aria-label="Esito per ${esc(x.home)} contro ${esc(x.away)}"><option value="" ${!result?'selected':''}>Da verificare</option><option value="W" ${result==='W'?'selected':''}>W — Win</option><option value="L" ${result==='L'?'selected':''}>L — Lose</option></select></td><td data-label="Azioni"><button class="delete-match" data-delete="${esc(x.id)}">Elimina</button></td></tr>`;
    }).join('');
  }
  function deleteArchiveMatch(id){
@@ -805,6 +827,8 @@ tr.prediction-detail-row .pred-patterns{background:transparent!important}
  $('archiveRows').addEventListener('change',e=>{const s=e.target.closest('[data-result]');if(!s)return;const items=readArchive();const item=items.find(x=>x.id===s.dataset.result);if(item){if(s.value)item.result=s.value;else delete item.result;if(writeArchive(items))renderArchive();}});
  $('toggleArchive').addEventListener('click',()=>{const p=$('archivePanel');p.hidden=!p.hidden;if(!p.hidden){renderArchive();p.scrollIntoView({behavior:'smooth',block:'start'})}});
  $('closeArchive').addEventListener('click',()=>$('archivePanel').hidden=true);
+ document.querySelectorAll('[data-section-top]').forEach(b=>b.addEventListener('click',()=>document.getElementById(b.dataset.sectionTop)?.scrollIntoView({behavior:'smooth',block:'start'})));
+ $('gePageTop')?.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
  $('togglePatterns').addEventListener('click',()=>{const p=$('patternPanel');p.hidden=!p.hidden;if(!p.hidden){renderPatternArchive();runPatternAnalysis(readPatternStore());p.scrollIntoView({behavior:'smooth',block:'start'})}});
  $('closePatterns').addEventListener('click',()=>$('patternPanel').hidden=true);
  $('savePatterns').addEventListener('click',savePatternBatch);
@@ -828,9 +852,18 @@ tr.prediction-detail-row .pred-patterns{background:transparent!important}
 'use strict';
 const KEY='goaledge_trader_table_v1';
 const PICKS_KEY='goaledge_trader_picks_v1';
+const TABLES_KEY='goaledge_trader_named_tables_v1';
 let picks=[];
+let activeTableName='Predefinita';
+let namedTables={};
+function readNamedTables(){try{const x=JSON.parse(localStorage.getItem(TABLES_KEY)||'{}');namedTables=x&&typeof x==='object'?x:{}}catch(e){namedTables={}}}
+function saveActiveTable(){try{localStorage.setItem(KEY,JSON.stringify(data));localStorage.setItem(PICKS_KEY,JSON.stringify(picks));if(activeTableName){namedTables[activeTableName]={data:JSON.parse(JSON.stringify(data)),picks:JSON.parse(JSON.stringify(picks)),updatedAt:new Date().toISOString()};localStorage.setItem(TABLES_KEY,JSON.stringify(namedTables));}}catch(e){alert('Impossibile salvare la tabella Trader nel browser. Esporta prima un backup.')}}
+function refreshTablePicker(){const sel=$('ttSavedTables');if(!sel)return;const names=Object.keys(namedTables).sort((a,b)=>a.localeCompare(b,'it'));sel.innerHTML='<option value="">Seleziona tabella salvata</option>'+names.map(n=>`<option value="${esc(n)}" ${n===activeTableName?'selected':''}>${esc(n)}</option>`).join('');$('ttTableStatus').textContent=`Tabella attiva: ${activeTableName} · ${names.length} tabelle salvate`}
+function saveTableAs(){const raw=prompt('Nome da assegnare alla Tabella Trader:');if(raw===null)return;const name=raw.trim();if(!name){alert('Inserisci un nome valido.');return}if(name.length>50){alert('Usa un nome massimo di 50 caratteri.');return}if(namedTables[name]&&!confirm(`La tabella “${name}” esiste già. Vuoi aggiornarla con i dati attuali?`))return;saveActiveTable();namedTables[name]={data:JSON.parse(JSON.stringify(data)),picks:JSON.parse(JSON.stringify(picks)),updatedAt:new Date().toISOString()};try{localStorage.setItem(TABLES_KEY,JSON.stringify(namedTables));activeTableName=name;refreshTablePicker();alert(`Tabella “${name}” salvata.`)}catch(e){alert('Spazio browser insufficiente: esporta un backup e libera spazio.')}}
+function openNamedTable(){const name=$('ttSavedTables').value;if(!name||!namedTables[name]){alert('Seleziona prima una tabella salvata.');return}if(!confirm(`Aprire “${name}”? I dati attuali vengono salvati prima del cambio.`))return;saveActiveTable();const t=namedTables[name];data={initial:200,target:5,stake:5,start:today(),profits:{},notes:{},moves:[],...(t.data||{})};picks=Array.isArray(t.picks)?t.picks:[];activeTableName=name;saveActiveTable();$('ttInitialBank').value=data.initial;$('ttTarget').value=String(data.target);$('ttStake').value=String(data.stake);$('ttStartDate').value=data.start;render();renderPicks();refreshTablePicker();$('ttTableStatus').textContent=`Tabella aperta: ${name}`}
+
 function loadPicks(){try{const x=JSON.parse(localStorage.getItem(PICKS_KEY)||'[]');picks=Array.isArray(x)?x:[]}catch(e){picks=[]}}
-function savePicks(){try{localStorage.setItem(PICKS_KEY,JSON.stringify(picks))}catch(e){alert('Impossibile salvare i pronostici nel browser.')}}
+function savePicks(){saveActiveTable()}
 function renderPicks(){const el=$('ttPicksRows');if(!el)return;el.innerHTML=picks.length?picks.map(p=>`<tr><td>${esc(p.date||'—')}<div class="tt-note">${esc(p.time||'')}</div></td><td><strong>${esc(p.home)} – ${esc(p.away)}</strong><div class="tt-note">${esc(p.league||'')}</div></td><td>${esc(p.market)}<div class="tt-note">${esc(p.signal||'')}</div></td><td>${esc(p.openLine)} → ${esc(p.currentLine)}</td><td>${esc(p.openOdds)} → ${esc(p.currentOdds)}</td><td><select data-pick-result="${esc(p.id)}"><option value="" ${!p.result?'selected':''}>Da verificare</option><option value="W" ${p.result==='W'?'selected':''}>Win</option><option value="L" ${p.result==='L'?'selected':''}>Lose</option></select></td><td><button class="tt-btn danger" data-pick-delete="${esc(p.id)}">Elimina</button></td></tr>`).join(''):'<tr><td colspan="7">Nessun pronostico aggiunto.</td></tr>';}
 function addPickFromMatch(key){const g=window.__goalEdgeLatestMatches?.find(x=>[x.date,x.time,x.home,x.away].join('|').toLocaleLowerCase()===key);if(!g||!g.metrics||!g.metrics.ok){alert('Dati del match non disponibili.');return}const m=g.metrics;const id=[g.date,g.time,g.home,g.away].join('|').toLocaleLowerCase();if(picks.some(p=>p.id===id)){alert('Questa partita è già nella Tabella Trader.');return}const s=window.__goalEdgeSignal?window.__goalEdgeSignal(m,.5):null;picks.unshift({id,date:g.date,time:g.time,home:g.home,away:g.away,league:g.league||'',market:'Over 0.5 HT',signal:s?.name||'Analizzato',openLine:m.openLine.toFixed(2),currentLine:m.currentLine.toFixed(2),openOdds:m.openOdds.toFixed(2),currentOdds:m.currentOdds.toFixed(2),result:''});savePicks();renderPicks();$('traderTableModule').hidden=false;$('traderTableModule').scrollIntoView({behavior:'smooth',block:'start'});}
 const $=id=>document.getElementById(id);
@@ -841,7 +874,7 @@ const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 const dateAdd=(date,days)=>{const d=new Date(date+'T12:00:00');d.setDate(d.getDate()+days);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
 let data={initial:200,target:5,stake:5,start:today(),profits:{},notes:{},moves:[]};
 function load(){try{const x=JSON.parse(localStorage.getItem(KEY)||'null');if(x&&typeof x==='object')data={...data,...x,profits:x.profits||{},notes:x.notes||{},moves:Array.isArray(x.moves)?x.moves:[]}}catch(e){}}
-function save(){data.initial=Math.max(0,Number($('ttInitialBank').value)||0);data.target=Number($('ttTarget').value)||5;data.stake=Number($('ttStake').value)||5;data.start=$('ttStartDate').value||today();try{localStorage.setItem(KEY,JSON.stringify(data))}catch(e){alert('Impossibile salvare nel browser. Esporta un backup JSON.')}render()}
+function save(){data.initial=Math.max(0,Number($('ttInitialBank').value)||0);data.target=Number($('ttTarget').value)||5;data.stake=Number($('ttStake').value)||5;data.start=$('ttStartDate').value||today();try{saveActiveTable()}catch(e){alert('Impossibile salvare nel browser. Esporta un backup JSON.')}render()}
 function moveSumBefore(date){return data.moves.reduce((n,m)=>n+(m.date<=date?(m.type==='deposit'?1:-1)*Number(m.amount):0),0)}
 function rows(){let bal=data.initial;const arr=[];for(let i=0;i<31;i++){const date=dateAdd(data.start,i);const start=bal;const mov=data.moves.filter(m=>m.date===date).reduce((n,m)=>n+(m.type==='deposit'?1:-1)*Number(m.amount),0);const profit=Number(data.profits[date]??'');const has=Object.prototype.hasOwnProperty.call(data.profits,date)&&data.profits[date]!==''&&Number.isFinite(profit);const target=start*data.target/100;const stake=start*data.stake/100;bal=start+(has?profit:0)+mov;arr.push({date,start,target,stake,profit:has?profit:null,mov,end:bal,has,goal:has?(profit>=target?'Raggiunto':profit<0?'In perdita':'Non raggiunto'):'Da inserire'});}return arr}
 function render(){
@@ -857,22 +890,24 @@ function render(){
 function drawChart(r){const svg=$('ttChart'),W=900,H=230,pad=35;let balance=data.initial;const actual=[balance],target=[balance];r.forEach(x=>{balance=x.end;actual.push(balance);target.push(target[target.length-1]*(1+data.target/100))});const vals=actual.concat(target);let min=Math.min(...vals),max=Math.max(...vals);if(min===max){min-=1;max+=1}const x=i=>pad+i*(W-2*pad)/(actual.length-1),y=v=>H-pad-(v-min)*(H-2*pad)/(max-min);const line=a=>a.map((v,i)=>`${i?'L':'M'}${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(' ');let grid='';for(let i=0;i<5;i++){const yy=pad+i*(H-2*pad)/4,val=max-i*(max-min)/4;grid+=`<line x1="${pad}" y1="${yy}" x2="${W-pad}" y2="${yy}" stroke="#e7ece8"/><text x="5" y="${yy+4}" font-size="10" fill="#66736a">${Math.round(val)}</text>`}svg.innerHTML=`${grid}<path d="${line(target)}" fill="none" stroke="#c79a37" stroke-width="2" stroke-dasharray="5 4"/><path d="${line(actual)}" fill="none" stroke="#347650" stroke-width="2.5"/> <text x="${pad}" y="18" font-size="11" fill="#347650">Cassa effettiva</text><text x="${pad+125}" y="18" font-size="11" fill="#a47a1d">Percorso teorico target composto</text><text x="${W-pad-70}" y="${H-8}" font-size="10" fill="#66736a">Giorni 0–31</text>`}
 function download(name,content,type){const b=new Blob([content],{type}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000)}
 function bind(){
+ $('ttSaveAs')?.addEventListener('click',saveTableAs);
+ $('ttOpenTable')?.addEventListener('click',openNamedTable);
  document.getElementById('toggleTrader')?.addEventListener('click',()=>{const p=$('traderTableModule');p.hidden=!p.hidden;if(!p.hidden){renderPicks();p.scrollIntoView({behavior:'smooth',block:'start'})}});
  $('ttCloseModule')?.addEventListener('click',()=>{$('traderTableModule').hidden=true;document.getElementById('toggleTrader')?.scrollIntoView({behavior:'smooth',block:'nearest'})});
  $('ttPicksRows')?.addEventListener('change',e=>{const el=e.target.closest('[data-pick-result]');if(!el)return;const p=picks.find(x=>x.id===el.dataset.pickResult);if(p){p.result=el.value;savePicks();renderPicks()}});
  $('ttPicksRows')?.addEventListener('click',e=>{const b=e.target.closest('[data-pick-delete]');if(!b)return;picks=picks.filter(x=>x.id!==b.dataset.pickDelete);savePicks();renderPicks()});
  $('rows')?.addEventListener('click',e=>{const b=e.target.closest('[data-trader-add]');if(b)addPickFromMatch(b.dataset.traderAdd)});
- ['ttInitialBank','ttTarget','ttStake','ttStartDate'].forEach(id=>$(id).addEventListener('change',save));$('ttSessions').addEventListener('change',e=>{const el=e.target;if(!el.matches('[data-profit-date]'))return;const d=el.dataset.profitDate;if(el.value==='')delete data.profits[d];else data.profits[d]=Number(el.value);try{localStorage.setItem(KEY,JSON.stringify(data))}catch(e){}render()});
-$('ttJournalDate').addEventListener('change',()=>{$('ttJournalText').value=data.notes[$('ttJournalDate').value]||''});$('ttSaveNote').addEventListener('click',()=>{const d=$('ttJournalDate').value||today(),v=$('ttJournalText').value.trim();if(v)data.notes[d]=v;else delete data.notes[d];localStorage.setItem(KEY,JSON.stringify(data));render();alert('Nota salvata.')});
-$('ttAddMove').addEventListener('click',()=>{const amount=Number($('ttMoveAmount').value);if(!Number.isFinite(amount)||amount<=0){alert('Inserisci un importo valido maggiore di zero.');return}data.moves.push({id:String(Date.now())+Math.random().toString(36).slice(2,6),date:$('ttMoveDate').value||today(),type:$('ttMoveType').value,amount,method:$('ttMoveMethod').value.trim()});localStorage.setItem(KEY,JSON.stringify(data));$('ttMoveAmount').value='';$('ttMoveMethod').value='';render()});
-$('ttMoves').addEventListener('click',e=>{const b=e.target.closest('[data-del-move]');if(!b)return;data.moves=data.moves.filter(m=>m.id!==b.dataset.delMove);localStorage.setItem(KEY,JSON.stringify(data));render()});
+ ['ttInitialBank','ttTarget','ttStake','ttStartDate'].forEach(id=>$(id).addEventListener('change',save));$('ttSessions').addEventListener('change',e=>{const el=e.target;if(!el.matches('[data-profit-date]'))return;const d=el.dataset.profitDate;if(el.value==='')delete data.profits[d];else data.profits[d]=Number(el.value);try{saveActiveTable()}catch(e){}render()});
+$('ttJournalDate').addEventListener('change',()=>{$('ttJournalText').value=data.notes[$('ttJournalDate').value]||''});$('ttSaveNote').addEventListener('click',()=>{const d=$('ttJournalDate').value||today(),v=$('ttJournalText').value.trim();if(v)data.notes[d]=v;else delete data.notes[d];saveActiveTable();render();alert('Nota salvata.')});
+$('ttAddMove').addEventListener('click',()=>{const amount=Number($('ttMoveAmount').value);if(!Number.isFinite(amount)||amount<=0){alert('Inserisci un importo valido maggiore di zero.');return}data.moves.push({id:String(Date.now())+Math.random().toString(36).slice(2,6),date:$('ttMoveDate').value||today(),type:$('ttMoveType').value,amount,method:$('ttMoveMethod').value.trim()});saveActiveTable();$('ttMoveAmount').value='';$('ttMoveMethod').value='';render()});
+$('ttMoves').addEventListener('click',e=>{const b=e.target.closest('[data-del-move]');if(!b)return;data.moves=data.moves.filter(m=>m.id!==b.dataset.delMove);saveActiveTable();render()});
 $('ttExport').addEventListener('click',()=>download('GoalEdge_TabTrader_backup.json',JSON.stringify(data,null,2),'application/json'));
-$('ttImport').addEventListener('click',()=>$('ttImportFile').click());$('ttImportFile').addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;try{const x=JSON.parse(await f.text());if(!x||typeof x!=='object'||!x.profits||!x.moves)throw Error('Formato non valido');data={...data,...x};localStorage.setItem(KEY,JSON.stringify(data));init();alert('Backup importato.')}catch(err){alert('File JSON non valido o incompatibile.')}e.target.value=''});
+$('ttImport').addEventListener('click',()=>$('ttImportFile').click());$('ttImportFile').addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;try{const x=JSON.parse(await f.text());if(!x||typeof x!=='object'||!x.profits||!x.moves)throw Error('Formato non valido');data={...data,...x};saveActiveTable();init();alert('Backup importato.')}catch(err){alert('File JSON non valido o incompatibile.')}e.target.value=''});
 $('ttCsv').addEventListener('click',()=>{const r=rows(),csv=[['Data','Cassa iniziale','Target teorico','Stake indicativo','Profitto perdita','Esito target','Cassa finale'],...r.map(x=>[x.date,x.start.toFixed(2),x.target.toFixed(2),x.stake.toFixed(2),x.profit==null?'':x.profit.toFixed(2),x.goal,x.end.toFixed(2)])].map(row=>row.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(';')).join('\r\n');download('GoalEdge_TabTrader_sessioni.csv','\ufeff'+csv,'text/csv;charset=utf-8')});
 $('ttReset').addEventListener('click',()=>{if(!confirm('Azzerare tutti i dati della Tabella Trader? Esporta prima un backup se vuoi conservarli.'))return;data={initial:200,target:5,stake:5,start:today(),profits:{},notes:{},moves:[]};localStorage.removeItem(KEY);init()});
 }
 function init(){ $('ttInitialBank').value=data.initial;$('ttTarget').value=String(data.target);$('ttStake').value=String(data.stake);$('ttStartDate').value=data.start;$('ttJournalDate').value=today();$('ttMoveDate').value=today();render()}
-load();loadPicks();bind();init();renderPicks();
+load();loadPicks();readNamedTables();if(!namedTables['Predefinita'])namedTables['Predefinita']={data:JSON.parse(JSON.stringify(data)),picks:JSON.parse(JSON.stringify(picks)),updatedAt:new Date().toISOString()};activeTableName='Predefinita';bind();init();renderPicks();refreshTablePicker();
 })();
 </script>
 
@@ -944,6 +979,209 @@ load();loadPicks();bind();init();renderPicks();
    }catch(e){say('Ripristino non completato: '+e.message)}
  };
 })();
+</script>
+
+<style>
+#geAuthOverlay{position:fixed;inset:0;z-index:99999;background:rgba(244,246,244,.97);display:flex;align-items:center;justify-content:center;padding:16px;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:#202821}
+#geAuthCard{width:min(100%,440px);background:#fff;border:1px solid #dce3dc;border-radius:18px;padding:22px;box-shadow:0 12px 40px #1b2b1d20}
+#geAuthCard h2{margin:0 0 6px;font-size:23px}#geAuthCard p{color:#667168;font-size:14px}
+#geAuthCard input{display:block;width:100%;padding:12px;border:1px solid #cbd5cb;border-radius:9px;margin:7px 0 12px;font:inherit;box-sizing:border-box}
+#geAuthCard button{border:0;border-radius:9px;padding:11px 14px;font-weight:800;cursor:pointer;background:#28784a;color:#fff;margin:4px 5px 4px 0}
+#geAuthCard button.secondary{background:#edf3ed;color:#202821;border:1px solid #dce3dc}
+#geAuthMsg{font-size:13px;white-space:pre-wrap;margin-top:10px;color:#28784a}#geAuthUser{font-size:12px;color:#667168;margin-top:8px}
+#geAuthBar{display:none;position:sticky;top:0;z-index:9999;background:#fff;border-bottom:1px solid #dce3dc;padding:8px 14px;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;font:13px system-ui;color:#202821}
+#geAuthBar button{border:1px solid #dce3dc;border-radius:8px;background:#edf3ed;padding:7px 10px;font-weight:700}
+
+/* v56 official: archivio leggibile su telefono, schede per partita. */
+@media(max-width:900px){
+  #archivePanel .table-wrap{overflow:visible!important;width:100%!important;max-width:100%!important}
+  #archivePanel .table-wrap table{display:block!important;width:100%!important;min-width:0!important;table-layout:auto!important;border-collapse:separate!important;border-spacing:0!important}
+  #archivePanel .table-wrap thead{display:none!important}
+  #archivePanel #archiveRows{display:block!important;width:100%!important}
+  #archivePanel #archiveRows tr.archive-match-row{display:block!important;width:100%!important;min-width:0!important;box-sizing:border-box;margin:0 0 12px!important;padding:10px 12px!important;border:1px solid #dce4dd!important;border-radius:12px!important;background:#fff!important;box-shadow:0 1px 3px rgba(20,40,25,.05)}
+  #archivePanel #archiveRows tr.archive-match-row td{display:grid!important;grid-template-columns:minmax(0,36%) minmax(0,1fr)!important;gap:9px!important;align-items:start!important;width:100%!important;min-width:0!important;max-width:100%!important;box-sizing:border-box!important;padding:8px 0!important;border-bottom:1px solid #edf0ed!important;text-align:left!important;overflow-wrap:anywhere!important;word-break:normal!important;font-size:13px!important}
+  #archivePanel #archiveRows tr.archive-match-row td:last-child{border-bottom:0!important;padding-bottom:2px!important}
+  #archivePanel #archiveRows tr.archive-match-row td:before{content:attr(data-label);display:block!important;font-size:10px!important;font-weight:850!important;color:#657168!important;line-height:1.3!important;text-transform:uppercase!important;letter-spacing:.02em!important}
+  #archivePanel #archiveRows td .league{font-size:11px!important;line-height:1.35!important;overflow-wrap:anywhere!important}
+  #archivePanel #archiveRows td .value-pair{display:flex!important;flex-wrap:wrap!important;gap:5px!important;min-width:0!important}
+  #archivePanel #archiveRows td .value-chip{max-width:100%!important;white-space:normal!important;overflow-wrap:anywhere!important}
+  #archivePanel #archiveRows td .small{font-size:11px!important;line-height:1.35!important}
+  #archivePanel #archiveRows .wl-select{width:100%!important;min-width:0!important;max-width:100%!important;font-size:12px!important;padding:9px 7px!important}
+  #archivePanel #archiveRows .delete-match{width:100%!important;max-width:150px!important;padding:9px 12px!important;font-size:13px!important}
+  #archivePanel .archive-toolbar{grid-template-columns:1fr 1fr!important}
+  #archivePanel .archive-toolbar input{grid-column:1/-1!important}
+  #archivePanel .archive-stats{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+}
+@media(max-width:390px){
+  #archivePanel .panel{padding:10px!important}
+  #archivePanel #archiveRows tr.archive-match-row{padding:9px!important}
+  #archivePanel #archiveRows tr.archive-match-row td{grid-template-columns:minmax(0,32%) minmax(0,1fr)!important;gap:7px!important;font-size:12px!important}
+  #archivePanel .archive-stats{gap:6px!important}
+  #archivePanel .archive-stats .stat b{font-size:16px!important}
+}
+</style>
+<div id="geAuthOverlay" role="dialog" aria-modal="true" aria-label="Accesso Goal Edge">
+ <div id="geAuthCard">
+  <div style="font-size:12px;letter-spacing:.12em;color:#28784a;font-weight:800">GOAL EDGE · ACCOUNT PERSONALE</div>
+  <h2>Accedi a Goal Edge</h2>
+  <p>Registrati con email e password per salvare Archivio e Tabella Trader nel tuo account e ritrovarli su telefono e PC.</p>
+  <label for="geAuthEmail">Email</label><input id="geAuthEmail" type="email" autocomplete="email" placeholder="nome@email.com">
+  <label for="geAuthPassword">Password</label><input id="geAuthPassword" type="password" autocomplete="current-password" placeholder="Almeno 6 caratteri">
+  <p style="font-size:12px;margin:0 0 10px">La sessione viene mantenuta su questo dispositivo. Premi <strong>Accedi</strong> per riprenderla; non serve salvare la password nel browser.</p>
+  <button id="geSignIn">Accedi</button><button id="geSignUp" class="secondary">Crea account</button>
+  <button id="geReset" class="secondary">Password dimenticata?</button>
+  <div id="geAuthMsg" role="status">Connessione al database in preparazione…</div>
+  <div id="geAuthUser"></div>
+ </div>
+</div>
+<div id="geAuthBar"><span id="geSignedAs">Goal Edge · account personale</span><button id="geSignOut">Esci</button></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(()=>{
+ 'use strict';
+ const SUPABASE_URL='https://hnwkgudqvkgtabifdmaq.supabase.co';
+ const SUPABASE_PUBLISHABLE_KEY='sb_publishable_qsFvFdksJmYE6JuLxrt3gA_T4wd-Ogh';
+ const REDIRECT_URL='https://guanito80.github.io/goaledge/';
+ const overlay=document.getElementById('geAuthOverlay'), bar=document.getElementById('geAuthBar'), msg=document.getElementById('geAuthMsg');
+ // Keep the app hidden until the login layer is present, preventing the initial flash.
+ document.documentElement.classList.remove('ge-auth-startup');
+ const email=()=>document.getElementById('geAuthEmail').value.trim();
+ const password=()=>document.getElementById('geAuthPassword').value;
+ const say=t=>{if(msg)msg.textContent=t};
+ const keys={
+  'goal-edge-asianodds-ht-archive-v1':'archive',
+  'goal-edge-pattern-lab-v1':'pattern',
+  'goaledge_trader_picks_v1':'trader_pick',
+  'goaledge_trader_table_v1':'trader_settings'
+ };
+ let client=null, currentUser=null, authBusy=false, syncBusy=false, signedOutBusy=false, initialSession=null;
+ const timers=new Map();
+ const originalSet=Storage.prototype.setItem;
+ // Writes made while restoring cloud data must never trigger another cloud write.
+ let restoringCloud=false;
+ function setLocalQuietly(k,v){restoringCloud=true;try{originalSet.call(localStorage,k,v)}finally{restoringCloud=false}}
+ async function pushKey(key){
+  if(!client||!currentUser||restoringCloud||!keys[key])return;
+  let value;try{value=JSON.parse(localStorage.getItem(key)||(keys[key]==='archive'||keys[key]==='pattern'||keys[key]==='trader_pick'?'[]':'{}'))}catch(e){throw new Error('Dati locali non validi per '+key)}
+  const type=keys[key], payload={storageKey:key,value};
+  const {data:rows,error:selErr}=await client.from('ge_user_records').select('id,updated_at').eq('user_id',currentUser.id).eq('record_type',type).order('updated_at',{ascending:false}).limit(1);
+  if(selErr)throw selErr;
+  if(rows&&rows.length){const {error}=await client.from('ge_user_records').update({payload,updated_at:new Date().toISOString()}).eq('id',rows[0].id);if(error)throw error;}
+  else {const {error}=await client.from('ge_user_records').insert({user_id:currentUser.id,record_type:type,payload});if(error)throw error;}
+ }
+ function schedulePush(key){
+  if(!currentUser||restoringCloud||!keys[key])return;
+  clearTimeout(timers.get(key));
+  timers.set(key,setTimeout(()=>pushKey(key).catch(e=>{console.warn('Goal Edge sync:',e.message);say('Dati salvati sul dispositivo. Sincronizzazione cloud da verificare: '+e.message)}),700));
+ }
+ Storage.prototype.setItem=function(k,v){originalSet.call(this,k,v);if(this===localStorage&&!restoringCloud)schedulePush(String(k))};
+ async function syncAll(){
+  if(!currentUser||syncBusy)return;
+  syncBusy=true;
+  try{
+   say('Sincronizzazione dei dati del tuo account…');
+   const {data:rows,error}=await client.from('ge_user_records').select('record_type,payload,updated_at').eq('user_id',currentUser.id);
+   if(error)throw error;
+   const remoteByType={};
+   (rows||[]).forEach(r=>{if(!remoteByType[r.record_type]||String(r.updated_at||'')>String(remoteByType[r.record_type].updated_at||''))remoteByType[r.record_type]=r});
+   for(const [key,type] of Object.entries(keys)){
+    const remote=remoteByType[type];
+    const localRaw=localStorage.getItem(key);
+    let localValue=null, remoteValue=null;
+    try{if(localRaw!==null)localValue=JSON.parse(localRaw)}catch(e){}
+    if(remote&&remote.payload&&remote.payload.storageKey===key&&Object.prototype.hasOwnProperty.call(remote.payload,'value')) remoteValue=remote.payload.value;
+    if(Array.isArray(localValue)||Array.isArray(remoteValue)){
+     const localArr=Array.isArray(localValue)?localValue:[];
+     const remoteArr=Array.isArray(remoteValue)?remoteValue:[];
+     const merged=new Map();
+     const identity=x=>x&&typeof x==='object'?(x.id!=null?'id:'+String(x.id):x.matchId!=null?'match:'+String(x.matchId):'json:'+JSON.stringify(x)):'value:'+String(x);
+     // Cloud first, then local: preserves remote-only records while keeping local edits for duplicate IDs.
+     for(const item of remoteArr)merged.set(identity(item),item);
+     for(const item of localArr)merged.set(identity(item),item);
+     const combined=[...merged.values()];
+     setLocalQuietly(key,JSON.stringify(combined));
+     // Never replace a non-empty cloud array with an empty local array.
+     if((!remote && combined.length>0) || (remote && JSON.stringify(remoteValue)!==JSON.stringify(combined))) await pushKey(key);
+    } else if(remoteValue!==null && remoteValue!==undefined){
+     // For settings objects, prefer cloud data on a new device; otherwise seed cloud from local data.
+     if(localValue===null){setLocalQuietly(key,JSON.stringify(remoteValue));}
+     else if(!remote){await pushKey(key);}
+    } else if(localRaw!==null){
+     // Seed cloud only when local data actually contains something useful.
+     const empty=localValue&&typeof localValue==='object'&&!Array.isArray(localValue)?Object.keys(localValue).length===0:Array.isArray(localValue)?localValue.length===0:localValue==null;
+     if(!empty)await pushKey(key);
+    }
+   }
+   document.getElementById('geSignedAs').textContent='● LOGGATO · '+(currentUser.email||'Account')+' · sincronizzato';
+   bar.style.display='flex';overlay.style.display='none';say('Accesso riuscito. Dati sincronizzati.');
+  } finally {syncBusy=false;}
+ }
+ async function enterWithSession(session){
+  if(!session||!session.user){say('Sessione non valida. Accedi di nuovo.');return}
+  if(authBusy)return;
+  authBusy=true;currentUser=session.user;overlay.style.display='flex';bar.style.display='none';
+  try{await syncAll()}
+  catch(e){say('Accesso effettuato, ma sincronizzazione non riuscita: '+(e.message||'errore sconosciuto')+'. I dati locali non sono stati cancellati.');bar.style.display='flex';overlay.style.display='none';document.getElementById('geSignedAs').textContent='● LOGGATO · '+(currentUser.email||'Account')+' · sync da verificare'}
+  finally{authBusy=false}
+ }
+ document.getElementById('geSignIn').addEventListener('click',async()=>{
+  if(authBusy)return;
+  if(!client)return say('Connessione Supabase non disponibile. Controlla Internet e ricarica.');
+  authBusy=true;const btn=document.getElementById('geSignIn');btn.disabled=true;
+  try{
+   if(!email())return say('Inserisci la tua email.');
+   // A remembered valid session can be resumed without entering the password again.
+   const {data:sd,error:se}=await client.auth.getSession();
+   if(!se&&sd.session){currentUser=sd.session.user;await syncAll();return}
+   if(!password())return say('Inserisci la password oppure recupera la sessione salvata.');
+   say('Accesso in corso…');
+   const {data,error}=await client.auth.signInWithPassword({email:email(),password:password()});
+   if(error)return say('Accesso non riuscito: '+error.message);
+   currentUser=data.session?.user||null;
+   if(data.session)await syncAll();else say('Accesso non completato: sessione non ricevuta.');
+  }catch(e){say('Errore durante l’accesso: '+(e.message||String(e)))}
+  finally{authBusy=false;btn.disabled=false}
+ });
+ document.getElementById('geSignUp').addEventListener('click',async()=>{
+  if(authBusy)return;
+  if(!client)return say('Connessione Supabase non disponibile. Ricarica la pagina.');
+  if(!email()||password().length<6)return say('Inserisci un’email valida e una password di almeno 6 caratteri.');
+  authBusy=true;const btn=document.getElementById('geSignUp');btn.disabled=true;
+  try{say('Creazione account…');const {data,error}=await client.auth.signUp({email:email(),password:password(),options:{emailRedirectTo:REDIRECT_URL}});if(error)return say('Registrazione non riuscita: '+error.message);if(data.session){currentUser=data.session.user;await syncAll()}else say('Account creato. Conferma l’email ricevuta, poi torna qui e premi ACCEDI.');}
+  catch(e){say('Errore durante la registrazione: '+(e.message||String(e)))}finally{authBusy=false;btn.disabled=false}
+ });
+ document.getElementById('geReset').addEventListener('click',async()=>{if(!client)return say('Connessione Supabase non disponibile.');if(!email())return say('Inserisci prima la tua email.');try{const {error}=await client.auth.resetPasswordForEmail(email(),{redirectTo:REDIRECT_URL});say(error?'Errore: '+error.message:'Se l’indirizzo è registrato, riceverai un’email per reimpostare la password.')}catch(e){say('Errore: '+(e.message||String(e)))} });
+ document.getElementById('geSignOut').addEventListener('click',async()=>{
+  if(signedOutBusy)return;signedOutBusy=true;
+  try{if(client){const {error}=await client.auth.signOut();if(error)throw error}currentUser=null;initialSession=null;bar.style.display='none';overlay.style.display='flex';document.getElementById('geAuthPassword').value='';say('Sei uscito da Goal Edge. Accedi per continuare.')}
+  catch(e){say('Uscita non riuscita: '+(e.message||String(e)))}finally{signedOutBusy=false}
+ });
+ if(!window.supabase||!window.supabase.createClient){say('Libreria di connessione non caricata. Controlla Internet e ricarica.');return}
+ client=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+ // Do not start synchronization from auth events: the buttons own the transition.
+ // This prevents duplicate syncs and the login overlay flashing several times.
+ client.auth.onAuthStateChange((event,session)=>{
+  if(event==='SIGNED_OUT'&&!signedOutBusy){currentUser=null;bar.style.display='none';overlay.style.display='flex';say('NON LOGGATO · Accedi o crea un account.')}
+ });
+ client.auth.getSession().then(({data,error})=>{
+  overlay.style.display='flex';bar.style.display='none';
+  if(error){say('Errore nel controllo della sessione: '+error.message);return}
+  initialSession=data.session||null;
+  if(initialSession){currentUser=initialSession.user;document.getElementById('geAuthEmail').value=currentUser.email||'';say('Sessione salvata trovata. Premi ACCEDI per entrare senza riscrivere la password.')}
+  else {currentUser=null;say('NON LOGGATO · Accedi o crea un account.')}
+ }).catch(e=>say('Impossibile verificare la sessione: '+(e.message||String(e))));
+})();
+</script>
+
+<script>
+function geToggleBackupPanel(){
+  const content=document.getElementById('backupPanelContent');
+  const toggle=document.getElementById('backupPanelToggle');
+  if(!content||!toggle)return;
+  const opening=content.hidden;
+  content.hidden=!opening;
+  toggle.setAttribute('aria-expanded',String(opening));
+}
 </script>
 </body>
 </html>
